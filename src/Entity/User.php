@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -42,6 +44,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 100)]
     private ?string $lastname = null;
+
+    /**
+     * @var Collection<int, TaskList>
+     */
+    #[ORM\OneToMany(targetEntity: TaskList::class, mappedBy: 'user')]
+    private Collection $taskLists;
+
+    /**
+     * @var Collection<int, Task>
+     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'user')]
+    private Collection $tasks;
+
+    public function __construct()
+    {
+        $this->taskLists = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +158,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TaskList>
+     */
+    public function getTaskLists(): Collection
+    {
+        return $this->taskLists;
+    }
+
+    public function addTaskList(TaskList $taskList): static
+    {
+        if (!$this->taskLists->contains($taskList)) {
+            $this->taskLists->add($taskList);
+            $taskList->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaskList(TaskList $taskList): static
+    {
+        if ($this->taskLists->removeElement($taskList)) {
+            // set the owning side to null (unless already changed)
+            if ($taskList->getUser() === $this) {
+                $taskList->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Task>
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): static
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks->add($task);
+            $task->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): static
+    {
+        if ($this->tasks->removeElement($task)) {
+            // set the owning side to null (unless already changed)
+            if ($task->getUser() === $this) {
+                $task->setUser(null);
+            }
+        }
 
         return $this;
     }

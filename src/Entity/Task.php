@@ -35,6 +35,13 @@ class Task
     #[ORM\Column]
     private ?int $progress = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TaskList $task_list = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +103,30 @@ class Task
     public function setProgress(int $progress): static
     {
         $this->progress = $progress;
+
+        return $this;
+    }
+
+    public function getTaskList(): ?TaskList
+    {
+        return $this->task_list;
+    }
+
+    public function setTaskList(?TaskList $task_list): static
+    {
+        $this->task_list = $task_list;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

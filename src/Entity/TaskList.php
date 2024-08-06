@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TaskListRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -25,6 +27,21 @@ class TaskList
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
+
+    #[ORM\ManyToOne(inversedBy: 'taskLists')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    /**
+     * @var Collection<int, Task>
+     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'task_list')]
+    private Collection $tasks;
+
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -51,6 +68,48 @@ class TaskList
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Task>
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): static
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks->add($task);
+            $task->setTaskList($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): static
+    {
+        if ($this->tasks->removeElement($task)) {
+            // set the owning side to null (unless already changed)
+            if ($task->getTaskList() === $this) {
+                $task->setTaskList(null);
+            }
+        }
 
         return $this;
     }

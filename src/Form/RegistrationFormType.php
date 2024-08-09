@@ -33,6 +33,14 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
+                'label_attr' => [
+                    'class' => 'form-check-label',
+                    'for' => 'flexCheckChecked'
+                ],
+                'attr' => [
+                    'class' => 'form-check-input',
+                    'id' => 'flexCheckChecked'
+                ]
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,

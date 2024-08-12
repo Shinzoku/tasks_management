@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Please enter a password</source>
+                <target>Entrer un mot de passe s'il vous plait</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Please enter a valid email</source>
+                <target>Entrer un email valide s'il vous plait</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Please enter a email</source>
+                <target>Entrer un email s'il vous plait</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Please enter a firstname</source>
+                <target>Entrer un prénom s'il vous plait</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Please enter a lastname</source>
+                <target>Entrer un nom s'il vous plait</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>You should agree to our terms</source>
+                <target>Vous devez accepter nos termes</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Your password should be at least 6 characters</source>
+                <target>Votre mot de passe doit être au moins de 6 caractères</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Your password cannot be longer than 15 characters</source>
+                <target>Votre mot de passe ne peut pas être plus long que 15 caractères</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>There is already an account with this email</source>
+                <target>Il y a déjà un compte avec cette email</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

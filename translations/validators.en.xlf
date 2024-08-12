@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Please enter a password</source>
+                <target>Please enter a password</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Please enter a valid email</source>
+                <target>Please enter a valid email</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Please enter a email</source>
+                <target>Please enter a email</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Please enter a firstname</source>
+                <target>Please enter a firstname</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Please enter a lastname</source>
+                <target>Please enter a lastname</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>You should agree to our terms</source>
+                <target>You should agree to our terms</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Your password should be at least 6 characters</source>
+                <target>Your password should be at least 6 characters</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Your password cannot be longer than 15 characters</source>
+                <target>Your password cannot be longer than 15 characters</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>There is already an account with this email</source>
+                <target>There is already an account with this email</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

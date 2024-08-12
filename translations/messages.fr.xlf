@@ -14,6 +14,18 @@
                 <source>Agree terms</source>
                 <target>Accepter les termes</target>
             </trans-unit>
+            <trans-unit id="4">
+                <source>Firstname</source>
+                <target>Prénom</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Lastname</source>
+                <target>Nom</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Password</source>
+                <target>Mot de passe</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

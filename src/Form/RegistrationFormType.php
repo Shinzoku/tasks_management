@@ -5,53 +5,50 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                'label_attr' => [
-                    'class' => 'inputEmail',
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                ],
+        ->add('email', EmailType::class, [
+            'constraints' => [
+                new Assert\NotBlank([
+                    'message' => 'Please enter a email',
+                ]),
+                new Assert\Email([
+                    'message' => 'Please enter a valid email',
+                ]),
+            ],
+            'label_attr' => [
+                'class' => 'inputEmail',
+                'for' => 'email',
+            ],
+            'attr' => [
+                'class' => 'form-control',
+                'id' => 'email',
+            ],
             ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
-                ],
-                'label_attr' => [
-                    'class' => 'form-check-label',
-                    'for' => 'flexCheckChecked'
-                ],
-                'attr' => [
-                    'class' => 'form-check-input',
-                    'id' => 'flexCheckChecked'
-                ]
-            ])
-            ->add('plainPassword', PasswordType::class, [
+            ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                'class' => 'form-control',
+                    'id' => 'password'
+                ],
+                'label_attr' => [
+                    'class' => 'inputPassword',
+                    'for' => 'password',
+                ],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
+                    new Assert\Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
@@ -60,13 +57,53 @@ class RegistrationFormType extends AbstractType
                         'maxMessage' => 'Your password cannot be longer than {{ limit }} characters',
                     ]),
                 ],
-                'label_attr' => [
-                    'class' => 'inputPassword',
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-            ])
+                ])
+                ->add('firstname', TextType::class, [
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'for' => 'firstname',
+                    ],
+                    'attr' => [
+                        'class' => 'form-control',
+                        'id' => 'firstname',
+                    ],
+                    'constraints' => [
+                        new Assert\NotBlank([
+                            'message' => 'Please enter a firstname',
+                        ]),
+                    ],
+                ])
+                ->add('lastname', TextType::class, [
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'for' => 'lastname',
+                    ],
+                    'attr' => [
+                        'class' => 'form-control',
+                        'id' => 'lastname',
+                    ],
+                    'constraints' => [
+                        new Assert\NotBlank([
+                            'message' => 'Please enter a lastname',
+                        ]),
+                    ],
+                ])
+                ->add('agreeTerms', CheckboxType::class, [
+                    'mapped' => false,
+                    'constraints' => [
+                        new Assert\IsTrue([
+                            'message' => 'You should agree to our terms',
+                        ]),
+                    ],
+                    'label_attr' => [
+                        'class' => 'form-check-label',
+                        'for' => 'checkbox'
+                    ],
+                    'attr' => [
+                        'class' => 'form-check-input',
+                        'id' => 'checkbox'
+                    ]
+                ])
         ;
     }
 

@@ -4,16 +4,12 @@
 
 {% block body %}
 <div class=" d-flex vh-100 justify-content-center  align-items-center">
-    <form method="post" class="d-grid w-25 border border-1 border-dark p-5 rounded bg-secondary text-white gap-3">
+    <form method="post" class="d-grid w-25 border border-1 border-dark p-5 rounded bg-secondary text-white gap-3"  novalidate>
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}
-            </div>
-        {% endif %}
+        <div id="error-container"></div>
 
         {% for label, messages in app.flashes %}
             <div class="alert alert-{{ label }}">

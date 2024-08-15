@@ -19,9 +19,6 @@ class RegistrationFormType extends AbstractType
         $builder
         ->add('email', EmailType::class, [
             'constraints' => [
-                new Assert\NotBlank([
-                    'message' => 'Please enter a email',
-                ]),
                 new Assert\Email([
                     'message' => 'Please enter a valid email',
                 ]),
@@ -48,6 +45,9 @@ class RegistrationFormType extends AbstractType
                     'for' => 'password',
                 ],
                 'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Please enter a password',
+                    ]),
                     new Assert\Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
@@ -67,11 +67,6 @@ class RegistrationFormType extends AbstractType
                         'class' => 'form-control',
                         'id' => 'firstname',
                     ],
-                    'constraints' => [
-                        new Assert\NotBlank([
-                            'message' => 'Please enter a firstname',
-                        ]),
-                    ],
                 ])
                 ->add('lastname', TextType::class, [
                     'label_attr' => [
@@ -81,11 +76,6 @@ class RegistrationFormType extends AbstractType
                     'attr' => [
                         'class' => 'form-control',
                         'id' => 'lastname',
-                    ],
-                    'constraints' => [
-                        new Assert\NotBlank([
-                            'message' => 'Please enter a lastname',
-                        ]),
                     ],
                 ])
                 ->add('agreeTerms', CheckboxType::class, [

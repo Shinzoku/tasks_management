@@ -25,7 +25,7 @@ class UserController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
-    #[Route('/admin', name: 'app_user_index', methods: ['GET'])]
+    #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
@@ -120,16 +120,16 @@ class UserController extends AbstractController
     public function delete(Request $request, User $user, Task $task, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-            if ($user->getDeletedAt() === null) {
-                $user->setDeletedAt(new \DateTime());
-                $tasks = $user->getTasks();
-                foreach ($tasks as $task) {
-                    $task->setUser(null);
-                    $entityManager->persist($task);
-                };
-                $entityManager->persist($user);
-                $entityManager->flush();
-            }
+            
+            $tasks = $user->getTasks();
+            foreach ($tasks as $task) {
+                $task->setUser(null);
+                $entityManager->persist($task);
+            };
+
+            $entityManager->remove($user);
+            $entityManager->flush();
+
         }
         $this->addFlash('success', 'Profil deleted with success.');
 

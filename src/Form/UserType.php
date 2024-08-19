@@ -18,11 +18,6 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'constraints' => [
-                    new Assert\Email([
-                        'message' => 'Please enter a valid email',
-                    ]),
-                ],
                 'label_attr' => [
                     'class' => 'inputEmail',
                     'for' => 'email',

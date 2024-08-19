@@ -3,9 +3,58 @@
 {% block title %}New User{% endblock %}
 
 {% block body %}
-    <h1>Create new User</h1>
+    <div class=" d-flex flex-column vh-100 justify-content-center  align-items-center">
+        <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
+            {% for label, messages in app.flashes %}
+                <div class="alert alert-{{ label }}">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <h1>Create new User</h1>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="d-grid gap-3">
+                <div>
+                    {{ form_label(form.email) }}
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email) }}
+                </div>
+                <div class="d-flex flex-row">
+                    <p>Roles :</p>
+                    {% for role in form.roles %}
+                        <div class="form-check">
+                            {{ form_widget(role) }}
+                            {{ form_label(role) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    {{ form_label(form.password) }}
+                    {{ form_errors(form.password) }}
+                    {{ form_widget(form.password) }}
+                </div>
+                <div>
+                    {{ form_label(form.firstname) }}
+                    {{ form_errors(form.firstname) }}
+                    {{ form_widget(form.firstname) }}
+                </div>
+                <div>
+                    {{ form_label(form.lastname) }}
+                    {{ form_errors(form.lastname) }}
+                    {{ form_widget(form.lastname) }}
+                </div>
 
-    {{ include('user/_form.html.twig') }}
-
-    <a href="{{ path('app_user_index') }}">back to list</a>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success">Create</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+            <div class="row mt-3">
+                <div class="col">
+                    <a class="btn btn-dark" href="{{ path('app_user_index') }}">back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

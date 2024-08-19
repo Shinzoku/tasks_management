@@ -26,6 +26,14 @@
                 <source>Password</source>
                 <target>Mot de passe</target>
             </trans-unit>
+            <trans-unit id="7">
+                <source>Admin</source>
+                <target>Admin</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>User</source>
+                <target>Utilisateur</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

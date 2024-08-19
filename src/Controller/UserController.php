@@ -41,6 +41,8 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $roles = $form->get('roles')->getData();
+            $user->setRoles($roles);
             $passwordNotBlank = $form->get('password')->getData();
             if ($passwordNotBlank === null) {
                 $this->addFlash('success', 'The password should not blank');

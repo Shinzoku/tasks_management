@@ -45,13 +45,12 @@ class UserType extends AbstractType
                     'class' => 'form-check-input',
                     'id' => 'checkbox'
                 ],
-                'required' => false,
-                'expanded' => true,  // Pour afficher comme une liste de cases à cocher
-                'multiple' => true,  // Pour permettre la sélection multiple
+                'expanded' => true,  // To display as a list of checkboxes
+                'multiple' => true,  // To enable multiple selection
             ])
             ->add('password', PasswordType::class, [
-                'required' => false,  // Le mot de passe est facultatif
-                'mapped' => false,    // Ne lie pas ce champ directement à l'entité User
+                'required' => false,  // Password is optional
+                'mapped' => false,    // Do not link this field directly to the User entity
                 'attr' => [
                     'autocomplete' => 'new-password',
                     'class' => 'form-control',

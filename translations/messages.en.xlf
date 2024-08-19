@@ -34,6 +34,10 @@
                 <source>User</source>
                 <target>User</target>
             </trans-unit>
+            <trans-unit id="9">
+                <source>Leave blank to keep the current password</source>
+                <target>Leave blank to keep the current password</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

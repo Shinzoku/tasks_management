@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/task/list')]
+#[Route('admin/task_list')]
 class TaskListController extends AbstractController
 {
     #[Route('/', name: 'app_task_list_index', methods: ['GET'])]

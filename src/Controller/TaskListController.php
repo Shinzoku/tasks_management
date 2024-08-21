@@ -6,11 +6,13 @@ use App\Entity\TaskList;
 use App\Form\TaskListType;
 use App\Repository\TaskListRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('admin/task_list')]
 class TaskListController extends AbstractController
 {

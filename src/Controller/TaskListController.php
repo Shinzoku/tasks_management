@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\TaskList;
 use App\Form\TaskListType;
 use App\Repository\TaskListRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('admin/task_list')]
@@ -47,8 +48,11 @@ class TaskListController extends AbstractController
     #[Route('/{id}', name: 'app_task_list_show', methods: ['GET'])]
     public function show(TaskList $taskList): Response
     {
+        $tasks = $taskList->getTasks();
+
         return $this->render('task_list/show.html.twig', [
             'task_list' => $taskList,
+            'tasks' => $tasks,
         ]);
     }
 

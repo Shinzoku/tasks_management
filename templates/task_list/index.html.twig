@@ -3,32 +3,37 @@
 {% block title %}TaskList index{% endblock %}
 
 {% block body %}
-    <h1>TaskList index</h1>
+    {% for label, messages in app.flashes %}
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <h1 class="text-center">TaskList index</h1>
 
-    <table class="table">
+    <table class="table table-dark table-hover">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
+            <tr class="text-center">
+                <th class="text-start">Id</th>
+                <th class="text-start">Name</th>
+                <th class="text-start">Description</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
-                <th>DeletedAt</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for task_list in task_lists %}
-            <tr>
-                <td>{{ task_list.id }}</td>
-                <td>{{ task_list.name }}</td>
-                <td>{{ task_list.description }}</td>
+            <tr class="text-center">
+                <td class="text-start">{{ task_list.id }}</td>
+                <td class="text-start">{{ task_list.name }}</td>
+                <td class="text-start">{{ task_list.description }}</td>
                 <td>{{ task_list.createdAt ? task_list.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ task_list.updatedAt ? task_list.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ task_list.deletedAt ? task_list.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_task_list_show', {'id': task_list.id}) }}">show</a>
-                    <a href="{{ path('app_task_list_edit', {'id': task_list.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_task_list_show', {'id': task_list.id}) }}">show</a>
+                    <a class="btn btn-secondary" href="{{ path('app_task_list_edit', {'id': task_list.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -39,5 +44,8 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_task_list_new') }}">Create new</a>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-success m-4" href="{{ path('app_task_list_new') }}">Create new</a>
+    </div>
+
 {% endblock %}

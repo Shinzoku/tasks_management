@@ -119,15 +119,18 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, Task $task, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
             
             $tasks = $user->getTasks();
-            foreach ($tasks as $task) {
-                $task->setUser(null);
-                $entityManager->persist($task);
-            };
+
+            if (!$tasks === null) {
+                foreach ($tasks as $task) {
+                    $task->setUser(null);
+                    $entityManager->persist($task);
+                };
+            }
 
             $entityManager->remove($user);
             $entityManager->flush();

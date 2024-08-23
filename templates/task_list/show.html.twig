@@ -29,7 +29,7 @@
                 {% for task in tasks %}
                     <tr>
                         <td><a class="text-primary text-decoration-none" href="{{ path('app_task_show', {'id': task.id}) }}">{{ task.title }}</a></td>
-                        {% if (task.user == null) and (task.user == null) %}
+                        {% if (task.user == null) %}
                             <td></td>
                         {% else %}
                             <td>{{ task.user.firstname }} {{ task.user.lastname }}</td>

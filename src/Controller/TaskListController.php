@@ -33,6 +33,8 @@ class TaskListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $taskList->setUser($user);
             $entityManager->persist($taskList);
             $entityManager->flush();
 

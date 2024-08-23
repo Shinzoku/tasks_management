@@ -13,11 +13,10 @@
                 <h5 class="col text-center card-title">{{ task_list.name }}</h5>
             </div>
             <h6 class="card-title mt-4">Description :</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <div class="row justify-content-between">
-                <p class="col fs-6 fst-italic">Created at : {{ task_list.createdAt ? task_list.createdAt|date('Y-m-d H:i:s') : '' }}</p>
-                <p class="col fs-6 fst-italic text-end">Updated at : {{ task_list.updatedAt ? task_list.updatedAt|date('Y-m-d H:i:s') : '' }}</p>
-            </div>
+            <p class="card-text">{{ task_list.description }}</p>
+            <p class="custom-small-text m-0"><b>Author :</b> {{ task_list.user.firstname }} {{ task_list.user.lastname }}</p>
+            <p class="fst-italic custom-small-text m-0"><b>Created at :</b> {{ task_list.createdAt ? task_list.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+            <p class="fst-italic custom-small-text m-0"><b>Updated at :</b> {{ task_list.updatedAt ? task_list.updatedAt|date('Y-m-d H:i:s') : '' }}</p>
         </div>
         <table class="table table-white table-hover">
             <thead>
@@ -38,7 +37,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="2">no records found</td>
+                        <td colspan="2" class="text-center">no records found</td>
                     </tr>
                 {% endfor %}
             </tbody>

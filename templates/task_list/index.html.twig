@@ -18,6 +18,7 @@
                 <th class="text-start">Id</th>
                 <th class="text-start">Name</th>
                 <th class="text-start">Description</th>
+                <th class="text-start">Author</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>actions</th>
@@ -29,6 +30,7 @@
                 <td class="text-start">{{ task_list.id }}</td>
                 <td class="text-start">{{ task_list.name }}</td>
                 <td class="text-start">{{ task_list.description }}</td>
+                <td class="text-start">{{ task_list.user.firstname }} {{ task_list.user.lastname }}</td>
                 <td>{{ task_list.createdAt ? task_list.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ task_list.updatedAt ? task_list.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
@@ -38,7 +40,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6" class="text-center">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

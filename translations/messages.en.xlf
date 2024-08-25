@@ -38,6 +38,26 @@
                 <source>Leave blank to keep the current password</source>
                 <target>Leave blank to keep the current password</target>
             </trans-unit>
+            <trans-unit id="10">
+                <source>Name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Title</source>
+                <target>Titre</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>Description</source>
+                <target>Description</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>Due date</source>
+                <target>Date d'échéance</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>Progress</source>
+                <target>Progrès</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

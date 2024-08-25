@@ -5,3 +5,15 @@ body {
 .custom-small-text {
     font-size: 12px;
 }
+
+#rangeValue {
+    top: 55px; /* Ajuster selon la hauteur du slider */
+    width: 55px;
+    height: 30px;
+    transform: translateX(-50%); /* Centrer le texte sous le curseur */
+    white-space: nowrap;
+}
+
+input.form-range {
+    width: 100%;
+}

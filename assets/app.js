@@ -9,6 +9,45 @@ import './styles/app.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
-function updateRangeValue(value) {
-    document.getElementById('rangeValue').textContent = value;
+window.updateRangeValue = function(rangeInput) {
+
+    // Obtenez la valeur actuelle du curseur
+    const value = parseFloat(rangeInput);
+
+    const rangeValue = document.getElementById('rangeValue');
+    const rangeElement = document.getElementById('task_progress');
+
+    // Obtenez le minimum et maximum de la plage du curseur
+    const min = parseFloat(rangeElement.min) || 0;
+    const max = parseFloat(rangeElement.max) || 100;
+
+
+    // Utilisation de setTimeout pour attendre que le DOM soit rendu
+    setTimeout(() => {
+        const sliderWidth = rangeElement.clientWidth;
+        
+        console.log('Min:', min, 'Max:', max, 'SliderWidth:', sliderWidth);
+        // Calcul de la position en pourcentage par rapport à la largeur du slider
+        const percentage = (value - min) / (max - min);
+        const offset = sliderWidth * percentage;
+
+        // Mise à jour du texte et de la position du span
+        rangeValue.textContent = value + ' %';
+        rangeValue.style.left = `${offset}px`;
+    }, 0); // Délai de 0ms pour permettre le rendu du DOM
 };
+
+// Appeler la fonction après le chargement de la page pour la valeur initiale
+document.addEventListener('turbo:load', function() {
+    const rangeElement = document.getElementById('task_progress');
+    if (rangeElement) {
+        console.log('Window loaded');
+        console.log('Initial value:', rangeElement.value);
+        console.log('Slider width:', rangeElement.clientWidth);
+        setTimeout(() => {
+            updateRangeValue(rangeElement.value);
+            console.log('Position updated');
+        }, 100);
+        
+    }
+});

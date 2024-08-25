@@ -65,6 +65,7 @@ class TaskType extends AbstractType
                     'id' => 'progress',
                     'min' => 0,
                     'max' => 100,
+                    'step' => 1,
                     'oninput' => 'updateRangeValue(this.value)', // Utilisé pour mettre à jour la valeur en temps réel
                 ],
             ])

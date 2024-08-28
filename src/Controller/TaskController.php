@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Entity\TaskList;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,22 +25,27 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_task_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('admin/task_list/{id}/new', name: 'app_task_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, TaskList $taskList): Response
     {
         $task = new Task();
+        
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setCompleted(false);
+            $task->setTaskList($taskList);
+
             $entityManager->persist($task);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_task_list_show', ['id' => $taskList->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('task/new.html.twig', [
             'task' => $task,
+            'task_list' => $taskList,
             'form' => $form,
         ]);
     }
@@ -56,9 +62,6 @@ class TaskController extends AbstractController
     public function edit(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TaskType::class, $task);
-        $form->handleRequest($request);
-
-        
 
         if ($form->isSubmitted() && $form->isValid()) {
             $progress = $form->get('progress')->getData();
@@ -70,7 +73,7 @@ class TaskController extends AbstractController
             
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_task_list_show', ['id' => $taskList->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('task/edit.html.twig', [

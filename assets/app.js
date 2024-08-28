@@ -26,7 +26,6 @@ window.updateRangeValue = function(rangeInput) {
     setTimeout(() => {
         const sliderWidth = rangeElement.clientWidth;
         
-        console.log('Min:', min, 'Max:', max, 'SliderWidth:', sliderWidth);
         // Calcul de la position en pourcentage par rapport à la largeur du slider
         const percentage = (value - min) / (max - min);
         const offset = sliderWidth * percentage;
@@ -41,12 +40,8 @@ window.updateRangeValue = function(rangeInput) {
 document.addEventListener('turbo:load', function() {
     const rangeElement = document.getElementById('task_progress');
     if (rangeElement) {
-        console.log('Window loaded');
-        console.log('Initial value:', rangeElement.value);
-        console.log('Slider width:', rangeElement.clientWidth);
         setTimeout(() => {
             updateRangeValue(rangeElement.value);
-            console.log('Position updated');
         }, 100);
         
     }

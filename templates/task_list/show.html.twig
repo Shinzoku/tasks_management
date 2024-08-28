@@ -42,7 +42,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <a class="btn btn-success mb-2" href="{{ path('app_task_new') }}">create new task</a>
+        <a class="btn btn-success mb-2" href="{{ path('app_task_new', {'id': task_list.id}) }}">create new task</a>
         <div class="d-flex gap-2">
             <div class="btn-group w-100" role="group" aria-label="Basic example">
                 <a class="btn btn-dark" href="{{ path('app_task_list_index') }}">back to list</a>

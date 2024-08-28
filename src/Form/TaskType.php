@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class TaskType extends AbstractType
 {
@@ -30,6 +31,11 @@ class TaskType extends AbstractType
                     'class' => 'form-control',
                     'id' => 'name',
                 ],
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Please enter a title',
+                    ]),
+                ],
             ])
             ->add('description', TextareaType::class, [
                 'required' => true,
@@ -41,6 +47,11 @@ class TaskType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'description',
+                ],
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'please enter a description',
+                    ]),
                 ],
             ])
             ->add('due_date', DateType::class, [

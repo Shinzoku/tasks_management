@@ -22,6 +22,9 @@
                 <a href="{{ path('app_front') }}" class="text-decoration-none text-dark">Accueil</a>
             </div>
             <div class="col">
+                <a href="{{ path('app_user_show_front', {'id': app.user.id}) }}" class="text-decoration-none text-dark">Account</a>
+            </div>
+            <div class="col">
                 <a href="{{ path('app_user_index') }}" class="text-decoration-none text-dark">Users</a>
             </div>
             <div class="col">
@@ -38,6 +41,9 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid d-flex justify-content-around">
             <div class="col">
                 <a href="{{ path('app_front') }}" class="text-decoration-none text-dark">Accueil</a>
+            </div>
+            <div class="col">
+                <a href="{{ path('app_user_show_front', {'id': app.user.id}) }}" class="text-decoration-none text-dark">Account</a>
             </div>
             <div class="col">
                 <a href="{{ path('app_task_list_index') }}" class="text-decoration-none text-dark">Tasks list</a>

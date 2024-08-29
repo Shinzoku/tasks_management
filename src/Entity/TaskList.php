@@ -39,7 +39,7 @@ class TaskList
     /**
      * @var Collection<int, Task>
      */
-    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'task_list')]
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'task_list', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $tasks;
 
     public function __construct()

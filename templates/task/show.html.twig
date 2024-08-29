@@ -57,7 +57,7 @@
                 </table>
                 <div class="d-flex gap-2">
                     <div class="btn-group w-100" role="group" aria-label="Basic example">
-                        <a class="btn btn-dark" href="{{ path('app_task_index') }}">back to list</a>
+                        <a class="btn btn-dark" href="{{ path('app_task_list_show', { 'id': task.taskList.id }) }}">back to list</a>
                         <a class="btn btn-secondary" href="{{ path('app_task_edit', {'id': task.id}) }}">edit</a>
                     </div>
                 <div>

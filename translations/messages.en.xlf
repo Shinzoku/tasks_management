@@ -44,7 +44,7 @@
             </trans-unit>
             <trans-unit id="11">
                 <source>Title</source>
-                <target>Titre</target>
+                <target>Title</target>
             </trans-unit>
             <trans-unit id="12">
                 <source>Description</source>
@@ -52,11 +52,15 @@
             </trans-unit>
             <trans-unit id="13">
                 <source>Due date</source>
-                <target>Date d'échéance</target>
+                <target>Due date</target>
             </trans-unit>
             <trans-unit id="14">
                 <source>Progress</source>
-                <target>Progrès</target>
+                <target>Progress</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Choose the task ?</source>
+                <target>Choose the task ?</target>
             </trans-unit>
         </body>
     </file>

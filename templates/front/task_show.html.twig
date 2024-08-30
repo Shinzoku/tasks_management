@@ -14,14 +14,11 @@
                     </div>
                     <h6 class="card-title mt-4">Description :</h6>
                     <p class="card-text">{{ task.description }}</p>
-                    <p class="fst-italic custom-small-text m-0"><b>Created at :</b> {{ task.createdAt ? task.createdAt|date('Y-m-d H:i:s') : '' }}</p>
-                    <p class="fst-italic custom-small-text m-0"><b>Updated at :</b> {{ task.updatedAt ? task.updatedAt|date('Y-m-d H:i:s') : '' }}</p>
                 </div>
                 <table class="table table-white table-hover">
                     <thead>
                         <tr class="text-center">
                             <th>Due_date</th>
-                            <th>Is_completed</th>
                             <th>Progress</th>
                             <th class="text-start">Assigned to</th>
                         </tr>
@@ -29,7 +26,6 @@
                     <tbody>
                         <tr class="text-center">
                             <td>{{ task.dueDate ? task.dueDate|date('Y-m-d') : '' }}</td>
-                            <td>{{ task.isCompleted ? 'Yes' : 'No' }}</td>
                             <td>{{ task.progress }} %</td>
                             {% if (task.user == null) %}
                                 <td></td>
@@ -41,13 +37,11 @@
                 </table>
                 <div class="d-flex gap-2">
                     <div class="btn-group w-100" role="group" aria-label="Basic example">
-                        <a class="btn btn-dark" href="{{ path('app_task_list_show', { 'id': task.taskList.id }) }}">back to list</a>
-                        <a class="btn btn-secondary" href="{{ path('app_task_edit', {'id': task.id}) }}">edit</a>
+                        <a class="btn btn-dark" href="{{ path('app_task_list_show_front', { 'id': task.taskList.id }) }}">back to task list</a>
+                        <a class="btn btn-primary" href="{{ path('app_task_index_front') }}">back to my task</a>
+                        <a class="btn btn-secondary" href="{{ path('app_task_edit_front', {'id': task.id}) }}">edit</a>
                     </div>
                 <div>
-                    {{ include('task/_delete_form.html.twig') }}
-                </div>
-            </div>
             </div>
         </div>
     </div>

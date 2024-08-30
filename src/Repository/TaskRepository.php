@@ -40,4 +40,17 @@ class TaskRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+        /**
+            * @return Task[] Returns an array of Task objects
+            */
+        public function findById($user): array
+        {
+            return $this->createQueryBuilder('t')
+                ->andWhere('t.user = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
 }

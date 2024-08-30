@@ -9,11 +9,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class TaskType extends AbstractType
 {
@@ -94,6 +95,19 @@ class TaskType extends AbstractType
                 'attr' => [
                     'id' => 'user',
                 ],
+            ])
+            ->add('chooseTask', CheckboxType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label'    => 'Choose the task ?',
+                'label_attr' => [
+                    'class' => 'form-check-label',
+                    'for' => 'flexSwitchCheck'
+                ],
+                'attr' => [
+                    'class' => 'form-check-input',
+                    'id' => 'flexSwitchCheck'
+                ]
             ])
         ;
     }

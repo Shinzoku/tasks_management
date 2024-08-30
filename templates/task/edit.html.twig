@@ -33,6 +33,17 @@
                     {{ form_label(form.user) }} <span> Assigned </span>
                     {{ form_widget(form.user, { 'attr': {'value': task.user ? task.user.getFirstname() ~ ' ' ~ task.user.getLastname() : ''} }) }}
                 </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="form-check form-switch d-none">
+                        {{ form_widget(form.chooseTask) }}
+                        {{ form_label(form.chooseTask, null) }}
+                    </div>
+                {% elseif is_granted('ROLE_USER') %}
+                    <div class="form-check form-switch">
+                        {{ form_widget(form.chooseTask) }}
+                        {{ form_label(form.chooseTask, null) }}
+                    </div>
+                {% endif %}
                 <div class="d-flex justify-content-end">
                     {{ include('task/_form.html.twig', {'button_label': 'Update'}) }}
                 </div>

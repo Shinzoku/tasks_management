@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaskList index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Task list index</h1>
+
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr class="text-center">
+                <th class="text-start">Id</th>
+                <th class="text-start">Name</th>
+                <th class="text-start">Description</th>
+                <th class="text-start">Author</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task_list in task_lists %}
+            <tr class="text-center">
+                <td class="text-start">{{ task_list.id }}</td>
+                <td class="text-start">{{ task_list.name }}</td>
+                <td class="text-start">{{ task_list.description }}</td>
+                <td class="text-start">{{ task_list.user.firstname }} {{ task_list.user.lastname }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_task_list_show_front', {'id': task_list.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="text-center">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

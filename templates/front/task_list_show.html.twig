@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaskList{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <h1 class="text-center">Task list info</h1>
+        <div class="card p-3">
+            <div class="card-body">
+                <div class="row w-100">
+                    <h5 class="col-auto card-title">Id : {{ task_list.id }}</h5>
+                    <h5 class="col text-center card-title">{{ task_list.name }}</h5>
+                </div>
+                <h6 class="card-title mt-4">Description :</h6>
+                <p class="card-text">{{ task_list.description }}</p>
+                <p class="custom-small-text m-0"><b>Author :</b> {{ task_list.user.firstname }} {{ task_list.user.lastname }}</p>
+            </div>
+            <table class="table table-white table-hover">
+                <thead>
+                    <tr>
+                        <th>Tasks</th>
+                        <th>Assigned to</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                        <tr>
+                            <td><a class="text-primary text-decoration-none" href="{{ path('app_task_show_front', {'id': task.id}) }}">{{ task.title }}</a></td>
+                            {% if (task.user == null) %}
+                                <td></td>
+                            {% else %}
+                                <td>{{ task.user.firstname }} {{ task.user.lastname }}</td>
+                            {% endif %}
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2" class="text-center">no records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+                <a class="btn btn-dark" href="{{ path('app_task_list_index_front') }}">back to list</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

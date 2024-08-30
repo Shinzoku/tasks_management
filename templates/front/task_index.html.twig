@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Task index</h1>
+
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr class="text-center">
+                <th class="text-start">Id</th>
+                <th class="text-start">Title</th>
+                <th class="text-start">Description</th>
+                <th>Due_date</th>
+                <th>Progress</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+            <tr class="text-center">
+                <td class="text-start">{{ task.id }}</td>
+                <td class="text-start">{{ task.title }}</td>
+                <td class="text-start">{{ task.description }}</td>
+                <td>{{ task.dueDate ? task.dueDate|date('Y-m-d') : '' }}</td>
+                <td>{{ task.progress }} %</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_task_show_front', {'id': task.id}) }}">show</a>
+                    <a class="btn btn-secondary" href="{{ path('app_task_edit_front', {'id': task.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6"  class="text-center">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

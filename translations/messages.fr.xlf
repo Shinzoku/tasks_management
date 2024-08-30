@@ -58,6 +58,10 @@
                 <source>Progress</source>
                 <target>Progrès</target>
             </trans-unit>
+            <trans-unit id="15">
+                <source>Choose the task ?</source>
+                <target>Choisir la tâche ?</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

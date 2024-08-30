@@ -28,10 +28,16 @@
                 <a href="{{ path('app_user_index') }}" class="text-decoration-none text-dark">Users</a>
             </div>
             <div class="col">
-                <a href="{{ path('app_task_list_index') }}" class="text-decoration-none text-dark">Tasks list</a>
+                <a href="{{ path('app_task_list_index_front') }}" class="text-decoration-none text-dark">Tasks list front</a>
             </div>
             <div class="col">
-                <a href="{{ path('app_task_index') }}" class="text-decoration-none text-dark">Tasks</a>
+                <a href="{{ path('app_task_list_index') }}" class="text-decoration-none text-dark">Tasks list admin</a>
+            </div>
+            <div class="col">
+                <a href="{{ path('app_task_index_front') }}" class="text-decoration-none text-dark">Tasks front</a>
+            </div>
+            <div class="col">
+                <a href="{{ path('app_task_index') }}" class="text-decoration-none text-dark">Tasks admin</a>
             </div>
             <div class="col text-end">
                 <a href="{{ path('app_logout') }}" class="text-decoration-none btn btn-outline-dark">Logout</a>
@@ -46,10 +52,10 @@
                 <a href="{{ path('app_user_show_front', {'id': app.user.id}) }}" class="text-decoration-none text-dark">Account</a>
             </div>
             <div class="col">
-                <a href="{{ path('app_task_list_index') }}" class="text-decoration-none text-dark">Tasks list</a>
+                <a href="{{ path('app_task_list_index_front') }}" class="text-decoration-none text-dark">Tasks list</a>
             </div>
             <div class="col">
-                <a href="{{ path('app_task_index') }}" class="text-decoration-none text-dark">Tasks</a>
+                <a href="{{ path('app_task_index_front') }}" class="text-decoration-none text-dark">Tasks</a>
             </div>
             <div class="col text-end">
                 <a href="{{ path('app_logout') }}" class="text-decoration-none btn btn-outline-dark">Logout</a>

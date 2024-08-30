@@ -3,11 +3,19 @@
 {% block title %}Edit Account{% endblock %}
 
 {% block body %}
-    <div class=" d-flex flex-column vh-100 justify-content-center  align-items-center">
+    <h1 class="text-center">Edit Account</h1>
+    <div class=" d-flex flex-column vh-100  align-items-center">
         <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
-            <h1>Edit Account</h1>
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="d-grid gap-3">
+                <div>
+                    {{ form_label(form.firstname) }}
+                    {{ form_widget(form.firstname, { 'attr': {'value': user.firstname} }) }}
+                </div>
+                <div>
+                    {{ form_label(form.lastname) }}
+                    {{ form_widget(form.lastname, { 'attr': {'value': user.lastname} }) }}
+                </div>
                 <div>
                     {{ form_label(form.email) }}
                     {{ form_widget(form.email, { 'attr': {'value': user.email} }) }}
@@ -37,14 +45,6 @@
                     {{ form_label(form.password) }}
                     {{ form_errors(form.password) }}
                     {{ form_widget(form.password, { 'attr': {'placeholder': 'Leave blank to keep the current password'} }) }}
-                </div>
-                <div>
-                    {{ form_label(form.firstname) }}
-                    {{ form_widget(form.firstname, { 'attr': {'value': user.firstname} }) }}
-                </div>
-                <div>
-                    {{ form_label(form.lastname) }}
-                    {{ form_widget(form.lastname, { 'attr': {'value': user.lastname} }) }}
                 </div>
 
                 <div class="d-flex justify-content-end">

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\EmailType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -140,5 +142,51 @@ class UserController extends AbstractController
         $this->addFlash('success', 'Profil deleted with success.');
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('{id}/mail', name: 'app_user_mail', methods: ['GET', 'POST'])]
+    public function mail(User $user, Request $request, MailerInterface $mailer): Response
+    {
+        $form = $this->createForm(EmailType::class, null, [
+            'email' => $user->getEmail(),
+            'username' => $user->getFirstName() . ' ' . $user->getLastname(),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            
+            if ($data['emailConfirmation'] == true) {
+                // generate a signed url and email it to the user
+                $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                    (new TemplatedEmail())
+                        ->from(new Address('no-reply@example.com', 'Admin'))
+                        ->to($data['email'])
+                        ->subject('Please Confirm your Email')
+                        ->htmlTemplate('registration/confirmation_email.html.twig')
+                );
+
+            } else {
+                $email = (new TemplatedEmail())
+                    ->from(new Address('no-reply@example.com', 'Admin'))
+                    ->to($data['email'])
+                    ->subject($data['subject'])
+                    ->text($data['message']);
+    
+                $mailer->send($email);
+            }
+
+
+            // Displays a success message on the desired page
+            $this->addFlash('success', 'The user will receive the email.');
+
+            // Redirect the user to a page, in this case the login page with the message above
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+        
+        return $this->render('user/mail.html.twig', [
+            'form' => $form,
+        ]);
     }
 }

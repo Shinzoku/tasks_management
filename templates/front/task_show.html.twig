@@ -26,7 +26,13 @@
                     <tbody>
                         <tr class="text-center">
                             <td>{{ task.dueDate ? task.dueDate|date('Y-m-d') : '' }}</td>
-                            <td>{{ task.progress }} %</td>
+                            <td>
+                                <div class="progress border border-dark" style="height: 25px;" title="{{ task.progress }}%">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ task.progress }}%;" aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100">
+                                        {{ task.progress }}%
+                                    </div>
+                                </div>
+                            </td>
                             {% if (task.user == null) %}
                                 <td></td>
                             {% else %}

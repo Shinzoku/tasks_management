@@ -23,7 +23,13 @@
                 <td class="text-start">{{ task.title }}</td>
                 <td class="text-start">{{ task.description }}</td>
                 <td>{{ task.dueDate ? task.dueDate|date('Y-m-d') : '' }}</td>
-                <td>{{ task.progress }} %</td>
+                <td>
+                    <div class="progress" style="height: 25px;" title="{{ task.progress }}%">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ task.progress }}%;" aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ task.progress }}%
+                        </div>
+                    </div>
+                </td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_task_show_front', {'id': task.id}) }}">show</a>
                     <a class="btn btn-secondary" href="{{ path('app_task_edit_front', {'id': task.id}) }}">edit</a>

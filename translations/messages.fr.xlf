@@ -62,6 +62,26 @@
                 <source>Choose the task ?</source>
                 <target>Choisir la tâche ?</target>
             </trans-unit>
+            <trans-unit id="16">
+                <source>To :</source>
+                <target>À :</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>Subject :</source>
+                <target>Objet :</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>Message :</source>
+                <target>Message :</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Email confirmation ?</source>
+                <target>Confirmation d'email ?</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Send</source>
+                <target>Envoyer</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -81,72 +81,97 @@ class FrontController extends AbstractController
     #[Route('task_list/index', name: 'app_task_list_index_front', methods: ['GET'])]
     public function task_list_index(TaskListRepository $taskListRepository): Response
     {
-        return $this->render('front/task_list_index.html.twig', [
-            'task_lists' => $taskListRepository->findAll(),
-        ]);
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->render('front/task_list_index.html.twig', [
+                'task_lists' => $taskListRepository->findAll(),
+            ]);
+        } else {
+            $this->addFlash('warning', 'Please login');
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     #[Route('task_list/{id}', name: 'app_task_list_show_front', methods: ['GET'])]
     public function task_list_show(TaskList $taskList): Response
     {
-        $tasks = $taskList->getTasks();
+        if ($this->isGranted('ROLE_USER')) {
+            $tasks = $taskList->getTasks();
 
-        return $this->render('front/task_list_show.html.twig', [
-            'task_list' => $taskList,
-            'tasks' => $tasks,
-        ]);
+            return $this->render('front/task_list_show.html.twig', [
+                'task_list' => $taskList,
+                'tasks' => $tasks,
+            ]);
+        } else {
+            $this->addFlash('warning', 'Please login');
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     #[Route('task/index', name: 'app_task_index_front', methods: ['GET'])]
     public function task_index(TaskRepository $taskRepository): Response
     {
-        $user = $this->getUser();
+        if ($this->isGranted('ROLE_USER')) {
+            $user = $this->getUser();
 
-        return $this->render('front/task_index.html.twig', [
-            'tasks' => $taskRepository->findById($user),
-        ]);
+            return $this->render('front/task_index.html.twig', [
+                'tasks' => $taskRepository->findById($user),
+            ]);
+        } else {
+            $this->addFlash('warning', 'Please login');
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     #[Route('task/{id}', name: 'app_task_show_front', methods: ['GET'])]
     public function task_show(Task $task): Response
     {
-        return $this->render('front/task_show.html.twig', [
-            'task' => $task,
-        ]);
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->render('front/task_show.html.twig', [
+                'task' => $task,
+            ]);
+        } else {
+            $this->addFlash('warning', 'Please login');
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     
     #[Route('task/{id}/edit', name: 'app_task_edit_front', methods: ['GET', 'POST'])]
     public function task_edit(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
-        $form = $this->createForm(TaskType::class, $task);
-        $form->handleRequest($request);
+        if ($this->isGranted('ROLE_USER')) {
+            $user = $this->getUser();
+            $form = $this->createForm(TaskType::class, $task);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $progress = $form->get('progress')->getData();
-            $chooseTask = $form->get('chooseTask')->getData();
-            
-            $task->setProgress($progress);
+                $progress = $form->get('progress')->getData();
+                $chooseTask = $form->get('chooseTask')->getData();
+                
+                $task->setProgress($progress);
 
-            if ($progress == 100) {
-                $task->setCompleted(true);
+                if ($progress == 100) {
+                    $task->setCompleted(true);
+                }
+
+                if ($chooseTask == true) {
+                    $task->setUser($user);
+                }
+                
+                $entityManager->persist($task);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_task_show_front', ['id' => $task->getId()], Response::HTTP_SEE_OTHER);
             }
 
-            if ($chooseTask == true) {
-                $task->setUser($user);
-            }
-            
-            $entityManager->persist($task);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_task_show_front', ['id' => $task->getId()], Response::HTTP_SEE_OTHER);
+            return $this->render('front/task_edit.html.twig', [
+                'task' => $task,
+                'form' => $form,
+            ]);
+        } else {
+            $this->addFlash('warning', 'Please login');
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('front/task_edit.html.twig', [
-            'task' => $task,
-            'form' => $form,
-        ]);
     }
 }

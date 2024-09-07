@@ -26,8 +26,10 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
+    // Defining LOGIN_ROUTE as a class constant. It makes the app_login route easily reusable throughout the class
     public const LOGIN_ROUTE = 'app_login';
 
+    // Inject UrlGeneratorInterface, UserProviderInterface, RequestStack and RouterInterface through the constructor
     public function __construct(private UrlGeneratorInterface $urlGenerator, UserProviderInterface $userProvider, RequestStack $requestStack, RouterInterface $router)
     {
         $this->urlGenerator = $urlGenerator;
@@ -38,70 +40,81 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     
     public function authenticate(Request $request): Passport
     {
+        // Extracting email, password, and CSRF token from the request payload
         $payload = $request->getPayload();
         $email = $payload->getString('email');
         $password = $payload->getString('password');
         $csrfToken = $payload->getString('_csrf_token');
 
-        // Email and password NotBlank
+        // Validation: Check if email or password is empty
         if (empty($email) || empty($password)) {
+            // Throw an exception with a custom error message
             throw new CustomUserMessageAuthenticationException('Email and password must not be empty');
         }
 
-        // Constraint at last 6 charasters
+        // Validation: Check if password length is less than 6 characters
         if (strlen($password) < 6) {
+            // Throw an exception with a custom error message
             throw new CustomUserMessageAuthenticationException('Your password should be at least 6 characters');
         }
 
-        // Constraint cannot be longer than 15 characters
+        // Validation: Check if password is longer than 15 characters
         if (strlen($password) > 15) {
+            // Throw an exception with a custom error message
             throw new CustomUserMessageAuthenticationException('Your password cannot be longer than 15 characters');
         }
 
-        // Constraint email format
+        // Validation: Ensure the email is in a valid format
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            // Throw an exception with a custom error message
             throw new CustomUserMessageAuthenticationException('Invalid email format.');
         }
 
+        // Store the last email (username) for error handling purposes
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
         // Load the user from the email (this may require adapting the UserProvider)
         $userProvider = $this->userProvider;
         $user = $userProvider->loadUserByIdentifier($email);
 
-        // Check if user is verified
+        // Check if the user has verified their email
         if (!$user->isVerified()) {
             // Throw an exception with a custom error message
             throw new CustomUserMessageAuthenticationException('Please confirm your email before login');
         }
 
-        // Return the Passport for authentication
+        // Return a Passport object for authentication with credentials and badges
         return new Passport(
-            new UserBadge($email),
-            new PasswordCredentials($password),
+            new UserBadge($email),                  // Represents the user identifier
+            new PasswordCredentials($password),     // Holds the password credentials
             [
-                new CsrfTokenBadge('authenticate', $csrfToken),
-                new RememberMeBadge(),
+                new CsrfTokenBadge('authenticate', $csrfToken),     // Validates the CSRF token
+                new RememberMeBadge(),                              // Enables the "Remember Me" functionality
             ]
         );
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Check if there's a previously requested path (e.g., before the login attempt)
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
+        // Get the authenticated user and their roles
         $user = $token->getUser();
         $roles = $user->getRoles();
 
+        // If the user has the 'ROLE_ADMIN' role, redirect them to the admin dashboard or homepage
         if (in_array('ROLE_ADMIN', $roles)) {
             return new RedirectResponse($this->urlGenerator->generate('app_front'));
-
+        
+        // If the user has the 'ROLE_USER' role, redirect them to the frontend homepage
         } elseif (in_array('ROLE_USER', $roles)) {
             return new RedirectResponse($this->urlGenerator->generate('app_front'));
         }
-        return new RedirectResponse($this->urlGenerator->generate('app_front'));
+        // If none of the roles match, default to redirecting them to the login page
+        return new RedirectResponse($this->urlGenerator->generate('app_login'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
@@ -109,15 +122,16 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         // Get session from current request
         $session = $this->requestStack->getSession();
 
-        // Add an error flash message
+        // Add a flash message to the session to notify the user of the authentication failure
         $session->getFlashBag()->add('danger', 'Authentication failed, no account found for the provided email : ' . $exception->getMessageKey());
 
-        // Redirect to login page
+        // Redirect the user back to the login page
         return new RedirectResponse($this->router->generate('app_login'));
     }
 
     protected function getLoginUrl(Request $request): string
     {
+        // Generates the login URL to which the user is redirected after a failed authentication attempt
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }

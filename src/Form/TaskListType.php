@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-// use App\Entity\User;
 use App\Entity\TaskList;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,49 +12,43 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class TaskListType extends AbstractType
 {
+    // Build the form with the specified fields and their options
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            // Add name field
             ->add('name', TextType::class, [
-                'required' => true,
-                'empty_data' => '',
+                'required' => true,             // Field is mandatory
+                'empty_data' => '',             // Default value if the field is empty
                 'label_attr' => [
-                    'class' => 'form-label',
-                    'for' => 'name',
+                    'class' => 'form-label',    // CSS class for the label
+                    'for' => 'name',            // HTML 'for' attribute for the label
                 ],
                 'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'name',
+                    'class' => 'form-control',  // CSS class for the input
+                    'id' => 'name',             // HTML 'id' attribute for the input
                 ],
             ])
+            // Add description field
             ->add('description', TextareaType::class, [
-                'required' => true,
-                'empty_data' => '',
+                'required' => true,             // Field is mandatory
+                'empty_data' => '',             // Default value if the field is empty
                 'label_attr' => [
-                    'class' => 'form-label',
-                    'for' => 'description',
+                    'class' => 'form-label',    // CSS class for the label
+                    'for' => 'description',     // HTML 'for' attribute for the label
                 ],
                 'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'description',
+                    'class' => 'form-control',  // CSS class for the textarea
+                    'id' => 'description',      // HTML 'id' attribute for the textarea
                 ],
             ]);
-
-        // if ($options['include_password']) {
-        //     $builder->add('user', EntityType::class, [
-        //                 'class' => User::class,
-        //                 'choice_label' => function (User $user) {
-        //                     return $user->getFirstname() . ' ' . $user->getLastname();
-        //                 },
-        //             ]);
-        // }
     }
 
+    // Configure options for this form type
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => TaskList::class,
-            // 'include_password' => false, // Par défaut, le champ password n'est pas inclus
+            'data_class' => TaskList::class,    // Associate form with the TaskList entity
         ]);
     }
 }

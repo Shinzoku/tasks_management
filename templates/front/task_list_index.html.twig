@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
-{% block title %}TaskList index{% endblock %}
+{% block title %}Task  list index{% endblock %}
+{# Sets the page title to "Task list index". #}
 
 {% block body %}
     <h1 class="text-center">Task list index</h1>
 
     <table class="table table-dark table-hover">
+    {# Creates a dark-themed table with hover effects. #}
         <thead>
             <tr class="text-center">
                 <th class="text-start">Id</th>
@@ -16,19 +19,22 @@
             </tr>
         </thead>
         <tbody>
-        {% for task_list in task_lists %}
+        {% for task_list in task_lists %}   {# Loops through each task list in the 'task_lists' collection. #}
             <tr class="text-center">
-                <td class="text-start">{{ task_list.id }}</td>
-                <td class="text-start">{{ task_list.name }}</td>
-                <td class="text-start">{{ task_list.description }}</td>
+                <td class="text-start">{{ task_list.id }}</td>          {# Displays the task list ID. #}
+                <td class="text-start">{{ task_list.name }}</td>        {# Displays the task list name. #}
+                <td class="text-start">{{ task_list.description }}</td> {# Displays the task list description. #}
                 <td class="text-start">{{ task_list.user.firstname }} {{ task_list.user.lastname }}</td>
+                {# Displays the full name of the user associated with the task list. #}
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_task_list_show_front', {'id': task_list.id}) }}">show</a>
+                    {# Provides a link to view details of the task list. #}
                 </td>
             </tr>
         {% else %}
+        {# Displays this row if there are no task lists in the collection. #}
             <tr>
-                <td colspan="6" class="text-center">no records found</td>
+                <td colspan="5" class="text-center">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

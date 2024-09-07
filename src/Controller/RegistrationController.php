@@ -25,23 +25,31 @@ class RegistrationController extends AbstractController
     {
     }
 
+    // Route for register
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
+        // Create a new User entity
         $user = new User();
+        // Create and handle the form for creating a new user
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        // Check if the form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
+            // Set the minimal state of the role (ROLE_USER) for a new user
             $user->setRoles(['ROLE_USER']);
+            //Set the hashed password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('password')->getData()
                 )
             );
+            // Set the initial state of the email verification (not confirmed)
             $user->setVerified(false);
 
+            // Persist the user entity and flush changes to the database
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -61,6 +69,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        // Render the register page
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
         ]);
@@ -72,6 +81,7 @@ class RegistrationController extends AbstractController
         // Extraire l'ID utilisateur de l'URL
         $userId = $request->query->get('id');
         if (!$userId) {
+            // Show error message and redirect to register
             $this->addFlash('verify_email_error', 'ID utilisateur manquant.');
             return $this->redirectToRoute('app_register');
         }
@@ -79,6 +89,7 @@ class RegistrationController extends AbstractController
         // Récupérer l'utilisateur depuis la base de données
         $user = $userRepository->find($userId);
         if (!$user) {
+            // Show error message and redirect to register
             $this->addFlash('verify_email_error', 'Utilisateur non trouvé.');
             return $this->redirectToRoute('app_register');
         }
@@ -87,14 +98,13 @@ class RegistrationController extends AbstractController
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
+            // If not, show error message and redirect to register
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
+        // On success, show a success message and redirect to login
         $this->addFlash('success', 'Your email address has been verified.');
-
         return $this->redirectToRoute('app_login');
     }
 }

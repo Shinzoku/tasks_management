@@ -1,47 +1,58 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
-{% block title %}TaskList{% endblock %}
+{% block title %}Task list{% endblock %}
+{# Sets the page title to "Task list". #}
 
 {% block body %}
-<div class="row justify-content-center">
-    <div class="col-auto">
-        <h1 class="text-center">Task list info</h1>
-        <div class="card p-3">
-            <div class="card-body">
-                <div class="row w-100">
-                    <h5 class="col-auto card-title">Id : {{ task_list.id }}</h5>
-                    <h5 class="col text-center card-title">{{ task_list.name }}</h5>
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <h1 class="text-center">Task list info</h1>
+            <div class="card p-3">
+            {# Creates a card with padding for displaying task list details. #}
+                <div class="card-body">
+                {# Creates a section for card content. #}
+                    <div class="row w-100">
+                        <h5 class="col-auto card-title">Id : {{ task_list.id }}</h5>        {# Displays the ID of the task list. #}
+                        <h5 class="col text-center card-title">{{ task_list.name }}</h5>    {# Displays the name of the task list. #}
+                    </div>
+                    <h6 class="card-title mt-4">Description :</h6>
+                    <p class="card-text">{{ task_list.description }}</p>    {# Displays the description of the task list. #}
+                    <p class="custom-small-text m-0"><b>Author :</b> {{ task_list.user.firstname }} {{ task_list.user.lastname }}</p>
+                    {# Displays the full name of the author (user) associated with the task list. #}
                 </div>
-                <h6 class="card-title mt-4">Description :</h6>
-                <p class="card-text">{{ task_list.description }}</p>
-                <p class="custom-small-text m-0"><b>Author :</b> {{ task_list.user.firstname }} {{ task_list.user.lastname }}</p>
+                <table class="table table-white table-hover">
+                {# Creates a table with a white background and hover effects. #}
+                    <thead>
+                        <tr>
+                            <th>Tasks</th>
+                            <th>Assigned to</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %} {# Loops through each task associated with the task list. #}
+                            <tr>
+                                <td><a class="text-primary text-decoration-none" href="{{ path('app_task_show_front', {'id': task.id}) }}">{{ task.title }}</a></td>
+                                {# Displays a link to the task details page with the task title. #}
+                                {% if (task.user == null) %}
+                                {# If no user is assigned to the task, leaves the cell empty. #}
+                                    <td></td>
+                                {% else %}
+                                    <td>{{ task.user.firstname }} {{ task.user.lastname }}</td>
+                                    {# Displays the full name of the user assigned to the task. #}
+                                {% endif %}
+                            </tr>
+                        {% else %}
+                        {# Displays this row if there are no tasks associated with the task list. #}
+                            <tr>
+                                <td colspan="2" class="text-center">no records found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a class="btn btn-dark" href="{{ path('app_task_list_index_front') }}">back to task lists</a>
+                {# Provides a button to navigate back to the task lists index. #}
             </div>
-            <table class="table table-white table-hover">
-                <thead>
-                    <tr>
-                        <th>Tasks</th>
-                        <th>Assigned to</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for task in tasks %}
-                        <tr>
-                            <td><a class="text-primary text-decoration-none" href="{{ path('app_task_show_front', {'id': task.id}) }}">{{ task.title }}</a></td>
-                            {% if (task.user == null) %}
-                                <td></td>
-                            {% else %}
-                                <td>{{ task.user.firstname }} {{ task.user.lastname }}</td>
-                            {% endif %}
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="2" class="text-center">no records found</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-                <a class="btn btn-dark" href="{{ path('app_task_list_index_front') }}">back to list</a>
         </div>
     </div>
-</div>
 {% endblock %}

@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}Task index{% endblock %}
+{# Sets the page title to "Task index". #}
 
 {% block body %}
     <h1 class="text-center">Task index</h1>
 
     <table class="table table-dark table-hover">
+    {# Creates a dark-themed table with hover effects. #}
         <thead>
             <tr class="text-center">
                 <th class="text-start">Id</th>
@@ -17,25 +20,29 @@
             </tr>
         </thead>
         <tbody>
-        {% for task in tasks %}
+        {% for task in tasks %} {# Loops through each task in the 'tasks' collection. #}
             <tr class="text-center">
-                <td class="text-start">{{ task.id }}</td>
-                <td class="text-start">{{ task.title }}</td>
-                <td class="text-start">{{ task.description }}</td>
+                <td class="text-start">{{ task.id }}</td>           {# Displays the task ID. #}
+                <td class="text-start">{{ task.title }}</td>        {# Displays the task title. #}
+                <td class="text-start">{{ task.description }}</td>  {# Displays the task description. #}
                 <td>{{ task.dueDate ? task.dueDate|date('Y-m-d') : '' }}</td>
+                {# Displays the due date of the task, formatted as 'Y-m-d' if it exists. #}
                 <td>
                     <div class="progress" style="height: 25px;" title="{{ task.progress }}%">
                         <div class="progress-bar bg-success" role="progressbar" style="width: {{ task.progress }}%;" aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100">
                             {{ task.progress }}%
                         </div>
                     </div>
+                    {# Displays the progress as a percentage within a progress bar. #}
                 </td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_task_show_front', {'id': task.id}) }}">show</a>
                     <a class="btn btn-secondary" href="{{ path('app_task_edit_front', {'id': task.id}) }}">edit</a>
+                    {# Provides links to view and edit the task. #}
                 </td>
             </tr>
         {% else %}
+        {# Displays this row if there are no tasks in the collection. #}
             <tr>
                 <td colspan="6"  class="text-center">no records found</td>
             </tr>

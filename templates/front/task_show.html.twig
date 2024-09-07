@@ -1,21 +1,26 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
-{% block title %}Task{% endblock %}
+{% block title %}Task Info{% endblock %}
+{# Sets the page title to "Task Info". #}
 
 {% block body %}
     <div class="row justify-content-center">
         <div class="col-auto">
             <h1 class="text-center">Task info</h1>
             <div class="card p-3">
+            {# Creates a card with padding to display the task information. #}
                 <div class="card-body">
+                {# A section to contain the card's body content. #}
                     <div class="row w-100">
-                        <h5 class="col-auto card-title">Id : {{ task.id }}</h5>
-                        <h5 class="col text-center card-title">{{ task.title }}</h5>
+                        <h5 class="col-auto card-title">Id : {{ task.id }}</h5>         {# Displays the task's ID. #}
+                        <h5 class="col text-center card-title">{{ task.title }}</h5>    {# Displays the task's title in the center. #}
                     </div>
                     <h6 class="card-title mt-4">Description :</h6>
-                    <p class="card-text">{{ task.description }}</p>
+                    <p class="card-text">{{ task.description }}</p>     {# Displays the task's description. #}
                 </div>
                 <table class="table table-white table-hover">
+                {# A table with a white background and hover effect. #}
                     <thead>
                         <tr class="text-center">
                             <th>Due_date</th>
@@ -26,26 +31,38 @@
                     <tbody>
                         <tr class="text-center">
                             <td>{{ task.dueDate ? task.dueDate|date('Y-m-d') : '' }}</td>
+                            {# Displays the due date if available. Otherwise, the cell is left blank. #}
                             <td>
                                 <div class="progress border border-dark" style="height: 25px;" title="{{ task.progress }}%">
                                     <div class="progress-bar bg-success" role="progressbar" style="width: {{ task.progress }}%;" aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100">
                                         {{ task.progress }}%
                                     </div>
                                 </div>
+                                {# Displays the task's progress percentage inside a progress bar. #}
                             </td>
                             {% if (task.user == null) %}
+                            {# If no user is assigned to the task, leaves the cell empty. #}
                                 <td></td>
                             {% else %}
+                            {# Displays the full name of the user assigned to the task. #}
                                 <td class="text-start">{{ task.user.firstname }} {{ task.user.lastname }}</td>
                             {% endif %}
                         </tr>
                     </tbody>
                 </table>
                 <div class="d-flex gap-2">
+                {# Creates a flexible layout with a gap between the elements (buttons). #}
                     <div class="btn-group w-100" role="group" aria-label="Basic example">
+                    {# Group of buttons, each taking full width, used for navigation. #}
+                    
                         <a class="btn btn-dark" href="{{ path('app_task_list_show_front', { 'id': task.taskList.id }) }}">back to task list</a>
-                        <a class="btn btn-primary" href="{{ path('app_task_index_front') }}">back to my task</a>
+                        {# Button to navigate back to the task list the task belongs to. #}
+
+                        <a class="btn btn-primary" href="{{ path('app_task_index_front') }}">back to my tasks</a>
+                        {# Button to navigate back to the user's tasks. #}
+
                         <a class="btn btn-secondary" href="{{ path('app_task_edit_front', {'id': task.id}) }}">edit</a>
+                        {# Button to edit the current task. #}
                     </div>
                 <div>
             </div>

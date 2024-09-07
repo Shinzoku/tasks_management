@@ -13,8 +13,8 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false, hardDelete: true)]
 class Task
 {
-    use TimestampableEntity;
-    use SoftDeleteableEntity;
+    use TimestampableEntity;    // Adds createdAt and updatedAt fields
+    use SoftDeleteableEntity;   // Adds deletedAt field for soft delete
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

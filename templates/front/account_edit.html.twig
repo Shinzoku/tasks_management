@@ -1,37 +1,46 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}Edit Account{% endblock %}
+{# Sets the page title to "Edit Account". #}
 
 {% block body %}
     <h1 class="text-center">Edit Account</h1>
     <div class=" d-flex flex-column vh-100  align-items-center">
+    {# Uses Bootstrap classes to center the content vertically and horizontally. #}
+
         <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
+        {# Container with 25% width, border, padding, secondary background, and white text. #}
+
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {# Starts the form with client-side validation disabled (novalidate). #}
+
             <div class="d-grid gap-3">
+            {# Container with spacing between form elements. #}
                 <div>
-                    {{ form_label(form.firstname) }}
-                    {{ form_widget(form.firstname, { 'attr': {'value': user.firstname} }) }}
+                    {{ form_label(form.firstname) }}    {# Displays the label for the first name field. #}
+                    {{ form_widget(form.firstname, { 'attr': {'value': user.firstname} }) }}    {# Displays the widget for the first name field. #}
                 </div>
                 <div>
-                    {{ form_label(form.lastname) }}
-                    {{ form_widget(form.lastname, { 'attr': {'value': user.lastname} }) }}
+                    {{ form_label(form.lastname) }}     {# Displays the label for the last name field. #}
+                    {{ form_widget(form.lastname, { 'attr': {'value': user.lastname} }) }}      {# Displays the widget for the last name field. #}
                 </div>
                 <div>
-                    {{ form_label(form.email) }}
-                    {{ form_widget(form.email, { 'attr': {'value': user.email} }) }}
+                    {{ form_label(form.email) }}        {# Displays the label for the email field. #}
+                    {{ form_widget(form.email, { 'attr': {'value': user.email} }) }}            {# Displays the widget for the email field. #}
                 </div>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') %}       {# Checks if the user has the ROLE_ADMIN role. #}
                     <div class="d-flex flex-row">
                         <p>Roles :</p>
-                        {% for role in form.roles %}
+                        {% for role in form.roles %}    {# Loops through the roles in the form. #}
                             <div class="form-check">
-                                {{ form_widget(role) }}
-                                {{ form_label(role) }}
+                                {{ form_widget(role) }} {# Displays the widget for each role. #}
+                                {{ form_label(role) }}  {# Displays the label for each role. #}
                             </div>
                         {% endfor %}
                     </div>
-                {% elseif is_granted('ROLE_USER') %}
-                    <div class="d-flex flex-row d-none">
+                {% elseif is_granted('ROLE_USER') %}    {# Checks if the user has the ROLE_USER role. #}
+                    <div class="d-flex flex-row d-none">{# With d-none class (display none) hide the div. #}
                         <p>Roles :</p>
                         {% for role in form.roles %}
                             <div class="form-check">
@@ -42,17 +51,19 @@
                     </div>
                 {% endif %}
                 <div>
-                    {{ form_label(form.password) }}
-                    {{ form_errors(form.password) }}
+                    {{ form_label(form.password) }}     {# Displays the label for the password field. #}
+                    {{ form_errors(form.password) }}    {# Displays validation errors for the password field. #}
                     {{ form_widget(form.password, { 'attr': {'placeholder': 'Leave blank to keep the current password'} }) }}
+                    {# Displays the widget for the password field with a placeholder indicating that leaving it blank keeps the current password. #}
                 </div>
 
                 <div class="d-flex justify-content-end">
                     {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+                    {# Includes another template for the submit button with the label "Update". #}
                 </div>
             </div>
-            {{ form_end(form) }}
-            <a class="btn btn-dark" href="{{ path('app_front') }}">back to accueil</a>
+            {{ form_end(form) }}    {# Ends the form. #}
+            <a class="btn btn-dark" href="{{ path('app_front') }}">back to accueil</a>  {# Provides a link to return to the homepage. #}
         </div>
     </div>
 {% endblock %}

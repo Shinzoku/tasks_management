@@ -1,28 +1,41 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
-{% block title %}New TaskList{% endblock %}
+{% block title %}New Task List{% endblock %}
+{# Sets the page title to "New Task List". #}
 
 {% block body %}
     <div class=" d-flex flex-column vh-100 justify-content-center  align-items-center">
         <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
+
             <h1 class="text-center">Create task list</h1>
+
+            {# Start rendering the form with no HTML5 validation #}
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="d-grid gap-3">
+
+                {# Render the name field #}
                 <div>
                     {{ form_label(form.name) }}
                     {{ form_errors(form.name) }}
                     {{ form_widget(form.name, { 'attr': {'value': task_list.name} }) }}
                 </div>
+
+                {# Render the description field #}
                 <div>
                     {{ form_label(form.description) }}
                     {{ form_errors(form.description) }}
                     {{ form_widget(form.description, { 'attr': {'value': task_list.description} }) }}
                 </div>
+
+                {# Include a form template for submit button with custom label #}
                 <div class="d-flex justify-content-end">
                     {{ include('task_list/_form.html.twig', {'button_label': 'create'}) }}
                 </div>
             </div>
             {{ form_end(form) }}
+
+            {# A link to go back to the task_lists list #}
             <a class="btn btn-dark" href="{{ path('app_task_list_index') }}">back to list</a>
         </div>
     </div>

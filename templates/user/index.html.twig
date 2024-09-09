@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}User index{% endblock %}
+{# Sets the page title to "User Index". #}
 
 {% block body %}
+
+    {#  Display flash messages, which may include status alerts or notifications. 
+        These are rendered as Bootstrap alerts. #}
     {% for label, messages in app.flashes %}
         <div class="alert alert-{{ label }}">
             {% for message in messages %}
@@ -10,8 +15,10 @@
             {% endfor %}
         </div>
     {% endfor %}
+
     <h1 class="text-center">User index</h1>
 
+    {# Table to display user data in a dark Bootstrap-styled table with hover effects. #}
     <table class="table table-dark table-hover">
         <thead>
             <tr class="text-center">
@@ -27,8 +34,10 @@
             </tr>
         </thead>
         <tbody>
+        {# Loop through the 'users' variable to display each user in a table row #}
         {% for user in users %}
             <tr class="text-center">
+                {# Display individual user details like ID, first name, last name, email, etc. #}
                 <td class="text-start">{{ user.id }}</td>
                 <td class="text-start">{{ user.firstname }}</td>
                 <td class="text-start">{{ user.lastname }}</td>
@@ -38,6 +47,8 @@
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
+                    {#  Display action buttons to show, edit, and email the user. 
+                        These buttons are grouped using Bootstrap classes. #}
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <a class="btn btn-primary" href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
                         <a class="btn btn-secondary" href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
@@ -46,6 +57,7 @@
                 </td>
             </tr>
         {% else %}
+            {# If no users are found, display a row with a message saying no records are available. #}
             <tr>
                 <td colspan="9" class="text-center">no records found</td>
             </tr>
@@ -53,8 +65,8 @@
         </tbody>
     </table>
 
+    {# Button to create a new user, styled with Bootstrap classes. #}
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <a class="btn btn-success m-4" href="{{ path('app_user_new') }}">Create new</a>
     </div>
-
 {% endblock %}

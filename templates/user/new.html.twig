@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}New User{% endblock %}
+{# Sets the page title to "New User". #}
 
 {% block body %}
     <div class=" d-flex flex-column vh-100 justify-content-center  align-items-center">
         <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
+
+            {# Display flash messages for any form-related feedback #}
             {% for label, messages in app.flashes %}
                 <div class="alert alert-{{ label }}">
                     {% for message in messages %}
@@ -12,14 +16,21 @@
                     {% endfor %}
                 </div>
             {% endfor %}
+
             <h1>Create new User</h1>
+
+            {# Start rendering the form with no HTML5 validation #}
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="d-grid gap-3">
+
+                {# Render the email field #}
                 <div>
                     {{ form_label(form.email) }}
                     {{ form_errors(form.email) }}
                     {{ form_widget(form.email) }}
                 </div>
+
+                {# Render the roles field with a list of checkboxes #}
                 <div class="d-flex flex-row">
                     <p>Roles :</p>
                     {% for role in form.roles %}
@@ -29,27 +40,36 @@
                         </div>
                     {% endfor %}
                 </div>
+
+                {# Render the password field #}
                 <div>
                     {{ form_label(form.password) }}
                     {{ form_errors(form.password) }}
                     {{ form_widget(form.password) }}
                 </div>
+
+                {# Render the firstname field #}
                 <div>
                     {{ form_label(form.firstname) }}
                     {{ form_errors(form.firstname) }}
                     {{ form_widget(form.firstname) }}
                 </div>
+
+                {# Render the lastname field #}
                 <div>
                     {{ form_label(form.lastname) }}
                     {{ form_errors(form.lastname) }}
                     {{ form_widget(form.lastname) }}
                 </div>
 
+                {# A submit button to create the new user #}
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-success">Create</button>
                 </div>
             </div>
             {{ form_end(form) }}
+
+            {# A link to go back to the user list #}
             <div class="row mt-3">
                 <div class="col">
                     <a class="btn btn-dark" href="{{ path('app_user_index') }}">back to list</a>

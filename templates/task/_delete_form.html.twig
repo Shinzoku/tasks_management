@@ -1,4 +1,10 @@
 <form method="post" action="{{ path('app_task_delete', {'id': task.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+
+    {#  Hidden field containing the CSRF token to secure the delete request.
+        The token is generated based on the user's ID. #}
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ task.id) }}">
+
+    {#  Delete button with a Bootstrap class for a "danger" style button.
+        When clicked, a confirmation dialog will appear. #}
     <button class="btn btn-danger">Delete</button>
 </form>

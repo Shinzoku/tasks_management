@@ -1,53 +1,65 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}Register{% endblock %}
+{# Sets the page title to "Register". #}
 
 {% block body %}
     <div class=" d-flex vh-100 justify-content-center  align-items-center">
         <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
+
+            {# Loop through and display any email verification error flash messages. #}
             {% for flash_error in app.flashes('verify_email_error') %}
                 <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
             {% endfor %}
 
             <h1 class="h3 mb-3 font-weight-normal text-center">Register</h1>
 
-            {# {{ form_start(registrationForm) }} #}
+            {# Begin the form with validation disabled using 'novalidate' attribute. #}
             {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="d-grid gap-3">
+
+                {# Email input field with label, errors, and widget. #}
                 <div>
-                    {# {{ form_row(registrationForm.email) }} #}
                     {{ form_label(registrationForm.email) }}
                     {{ form_errors(registrationForm.email) }}
                     {{ form_widget(registrationForm.email) }}
                 </div>
+
+                {# Password input field with label, errors, and widget. #}
                 <div>
-                    {# {{ form_row(registrationForm.plainPassword, { label: 'Password'}) }} #}
                     {{ form_label(registrationForm.password) }}
                     {{ form_errors(registrationForm.password) }}
                     {{ form_widget(registrationForm.password) }}
                 </div>
+
+                {# Firstname input field with label, errors, and widget. #}
                 <div>
-                    {# {{ form_row(registrationForm.firstname) }} #}
                     {{ form_label(registrationForm.firstname) }}
                     {{ form_errors(registrationForm.firstname) }}
                     {{ form_widget(registrationForm.firstname) }}
                 </div>
+
+                {# Lastname input field with label, errors, and widget. #}
                 <div>
-                    {# {{ form_row(registrationForm.lastname) }} #}
                     {{ form_label(registrationForm.lastname) }}
                     {{ form_errors(registrationForm.lastname) }}
                     {{ form_widget(registrationForm.lastname) }}
                 </div>
+
+                {# Terms and conditions checkbox with label, widget, and errors. #}
                 <div class="form-check mb-3">
-                    {# {{ form_row(registrationForm.agreeTerms) }} #}
                     {{ form_label(registrationForm.agreeTerms) }}
                     {{ form_widget(registrationForm.agreeTerms) }}
                     {{ form_errors(registrationForm.agreeTerms) }}
                 </div>
+
+                {# Submit button for the registration form. #}
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">Register</button>
                 </div>
             </div>
+            {# End the form. #}
             {{ form_end(registrationForm) }}
         </div>
     </div>

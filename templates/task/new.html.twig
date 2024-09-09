@@ -1,44 +1,67 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}New Task{% endblock %}
+{# Sets the page title to "New Task". #}
 
 {% block body %}
     <div class=" d-flex flex-column vh-100 justify-content-center  align-items-center">
         <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
+
             <h1 class="text-center">Create new Task</h1>
+
+            {# Start rendering the form with no HTML5 validation #}
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="d-grid gap-3">
+
+                {# Render the title field #}
                 <div>
                     {{ form_label(form.title) }}
                     {{ form_errors(form.title) }}
                     {{ form_widget(form.title) }}
                 </div>
+
+                {# Render the description field #}
                 <div>
                     {{ form_label(form.description) }}
                     {{ form_errors(form.description) }}
                     {{ form_widget(form.description) }}
                 </div>
+
+                {# Render the due_date field #}
                 <div>
                     {{ form_label(form.due_date) }}
                     {{ form_widget(form.due_date) }}
                 </div>
+
+                {# Render the widget for the 'progress' field with the current value #}
                 <div class="mb-3 position-relative">
+
+                    {# Display the label of the 'progress' field #}
                     {{ form_label(form.progress) }}
                     <div class="d-flex align-items-center">
+                        {# Display the current value of the 'progress' field as a percentage #}
                         {{ form_widget(form.progress) }}
                         <span id="rangeValue" class="position-absolute border border-2 border-secondary rounded-3 pb-1 bg-white text-dark text-center">{{ form.vars.value.progress }} %</span>
                     </div>
                 </div>
+
+                {# Render the label for the 'user' field and display the assigned user, if there is one #}
                 <div class="mt-3">
                     {{ form_label(form.user) }} <span> Assigned </span>
                     {{ form_widget(form.user, { 'attr': {'value': task.user ? task.user.getFirstname() ~ ' ' ~ task.user.getLastname() : ''} }) }}
                 </div>
+
+
                 <div class="d-flex justify-content-end">
+                    {# Include a form template for submit button with custom label #}
                     {{ include('task/_form.html.twig', {'button_label': 'Create'}) }}
                 </div>
             </div>
             {{ form_end(form) }}
-            <a class="btn btn-dark" href="{{ path('app_task_list_show', {'id': task_list.id}) }}">back to list</a>
+
+            {# A link to return to the task_list associated with this new task  #}
+            <a class="btn btn-dark" href="{{ path('app_task_list_show', {'id': task_list.id}) }}">back to task list</a>
         </div>
     </div>
 {% endblock %}

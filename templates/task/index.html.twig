@@ -1,10 +1,23 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}Task index{% endblock %}
+{# Sets the page title to "Task index". #}
 
 {% block body %}
+    {#  Display flash messages, which may include status alerts or notifications. 
+        These are rendered as Bootstrap alerts. #}
+    {% for label, messages in app.flashes %}
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
     <h1 class="text-center">Task index</h1>
 
+    {# Table to display task data in a dark Bootstrap-styled table with hover effects. #}
     <table class="table table-dark table-hover">
         <thead>
             <tr class="text-center">
@@ -20,8 +33,10 @@
             </tr>
         </thead>
         <tbody>
+        {# Loop through the 'tasks' variable to display each task in a table row #}
         {% for task in tasks %}
             <tr class="text-center">
+                {# Display individual task details like ID, title, description, etc. #}
                 <td class="text-start">{{ task.id }}</td>
                 <td class="text-start">{{ task.title }}</td>
                 <td class="text-start">{{ task.description }}</td>
@@ -37,11 +52,13 @@
                 <td>{{ task.createdAt ? task.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ task.updatedAt ? task.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
+                    {#  Display action buttons to show, edit. #}
                     <a class="btn btn-primary" href="{{ path('app_task_show', {'id': task.id}) }}">show</a>
                     <a class="btn btn-secondary" href="{{ path('app_task_edit', {'id': task.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
+            {# If no tasks are found, display a row with a message saying no records are available. #}
             <tr>
                 <td colspan="9"  class="text-center">no records found</td>
             </tr>

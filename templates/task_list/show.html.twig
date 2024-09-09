@@ -1,58 +1,87 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
-{% block title %}TaskList{% endblock %}
+{% block title %}Task List Info{% endblock %}
+{# Sets the page title to "Task List Info". #}
 
 {% block body %}
-<div class="row justify-content-center">
-<div class="col-auto">
-    <h1 class="text-center">Task list info</h1>
-    <div class="card p-3">
-        <div class="card-body">
-            <div class="row w-100">
-                <h5 class="col-auto card-title">Id : {{ task_list.id }}</h5>
-                <h5 class="col text-center card-title">{{ task_list.name }}</h5>
-            </div>
-            <h6 class="card-title mt-4">Description :</h6>
-            <p class="card-text">{{ task_list.description }}</p>
-            <p class="custom-small-text m-0"><b>Author :</b> {{ task_list.user.firstname }} {{ task_list.user.lastname }}</p>
-            <p class="fst-italic custom-small-text m-0"><b>Created at :</b> {{ task_list.createdAt ? task_list.createdAt|date('Y-m-d H:i:s') : '' }}</p>
-            <p class="fst-italic custom-small-text m-0"><b>Updated at :</b> {{ task_list.updatedAt ? task_list.updatedAt|date('Y-m-d H:i:s') : '' }}</p>
-        </div>
-        <table class="table table-white table-hover">
-            <thead>
-                <tr>
-                    <th>Tasks</th>
-                    <th>Assigned to</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for task in tasks %}
-                    <tr>
-                        <td><a class="text-primary text-decoration-none" href="{{ path('app_task_show', {'id': task.id}) }}">{{ task.title }}</a></td>
-                        {% if (task.user == null) %}
-                            <td></td>
+    <div class="row justify-content-center">
+        <div class="col-auto">
+
+            <h1 class="text-center">Task list info</h1>
+
+            {# Card containing the task_list's information table #}
+            <div class="card p-3">
+                <div class="card-body">
+                    <div class="row w-100">
+                        {# Display the task_list's ID #}
+                        <h5 class="col-auto card-title">Id : {{ task_list.id }}</h5>
+                        {# Display the task_list's name #}
+                        <h5 class="col text-center card-title">{{ task_list.name }}</h5>
+                    </div>
+                    {# Display the task_list's description #}
+                    <h6 class="card-title mt-4">Description :</h6>
+                    <p class="card-text">{{ task_list.description }}</p>
+
+                    {# Display the task_list's user ( author ) #}
+                    <p class="custom-small-text m-0"><b>Author :</b> {{ task_list.user.firstname }} {{ task_list.user.lastname }}</p>
+
+                    {# Display the creation date of the task_list in the specified format #}
+                    <p class="fst-italic custom-small-text m-0"><b>Created at :</b> {{ task_list.createdAt ? task_list.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+
+                    {# Display the last updated date of the task_list #}
+                    <p class="fst-italic custom-small-text m-0"><b>Updated at :</b> {{ task_list.updatedAt ? task_list.updatedAt|date('Y-m-d H:i:s') : '' }}</p>
+                </div>
+
+                {# Table to display task data in a dark Bootstrap-styled table with hover effects. #}
+                <table class="table table-white table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tasks</th>
+                            <th>Assigned to</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {# Loop through the 'tasks' variable to display each task in a table row #}
+                        {% for task in tasks %}
+                            <tr>
+                                {# Link to show the task's details #}
+                                <td>
+                                    <a class="text-primary text-decoration-none" href="{{ path('app_task_show', {'id': task.id}) }}">{{ task.title }}</a>
+                                </td>
+                                
+                                {# Display or not, the firstname and lastname of the assigned user #}
+                                {% if (task.user == null) %}
+                                    <td></td>
+                                {% else %}
+                                    <td>{{ task.user.firstname }} {{ task.user.lastname }}</td>
+                                {% endif %}
+                            </tr>
                         {% else %}
-                            <td>{{ task.user.firstname }} {{ task.user.lastname }}</td>
-                        {% endif %}
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="2" class="text-center">no records found</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a class="btn btn-success mb-2" href="{{ path('app_task_new', {'id': task_list.id}) }}">create new task</a>
-        <div class="d-flex gap-2">
-            <div class="btn-group w-100" role="group" aria-label="Basic example">
-                <a class="btn btn-dark" href="{{ path('app_task_list_index') }}">back to list</a>
-                <a class="btn btn-secondary" href="{{ path('app_task_list_edit', {'id': task_list.id}) }}">edit</a>
+                            {# If no tasks are found, display a row with a message saying no records are available. #}
+                            <tr>
+                                <td colspan="2" class="text-center">no records found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {# Button to create a new task, styled with Bootstrap classes. #}
+                <a class="btn btn-success mb-2" href="{{ path('app_task_new', {'id': task_list.id}) }}">create new task</a>
+
+                {# Buttons section to return to the task_list list or edit the task_list details #}
+                <div class="d-flex gap-2">
+                    <div class="btn-group w-100" role="group" aria-label="Basic example">
+                        <a class="btn btn-dark" href="{{ path('app_task_list_index') }}">back to list</a>
+                        <a class="btn btn-secondary" href="{{ path('app_task_list_edit', {'id': task_list.id}) }}">edit</a>
+                    </div>
+
+                    {# Include the delete form for the task_list, which will render a button to delete the task_list #}
+                    <div>
+                        {{ include('task_list/_delete_form.html.twig') }}
+                    </div>
+                </div>
             </div>
-        <div>
-            {{ include('task_list/_delete_form.html.twig') }}
         </div>
     </div>
-    </div>
-</div>
-</div>
 {% endblock %}

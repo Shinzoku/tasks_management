@@ -1,22 +1,36 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
-{% block title %}Task{% endblock %}
+{% block title %}Task Info{% endblock %}
+{# Sets the page title to "Task Info". #}
 
 {% block body %}
     <div class="row justify-content-center">
         <div class="col-auto">
+
             <h1 class="text-center">Task info</h1>
+
+            {# Card containing the task's information table #}
             <div class="card p-3">
                 <div class="card-body">
                     <div class="row w-100">
+                        {# Display the task's ID #}
                         <h5 class="col-auto card-title">Id : {{ task.id }}</h5>
+                        {# Display the task's title #}
                         <h5 class="col text-center card-title">{{ task.title }}</h5>
                     </div>
+                    {# Display the task's description #}
                     <h6 class="card-title mt-4">Description :</h6>
                     <p class="card-text">{{ task.description }}</p>
+
+                    {# Display the creation date of the task in the specified format #}
                     <p class="fst-italic custom-small-text m-0"><b>Created at :</b> {{ task.createdAt ? task.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+
+                    {# Display the last updated date of the task #}
                     <p class="fst-italic custom-small-text m-0"><b>Updated at :</b> {{ task.updatedAt ? task.updatedAt|date('Y-m-d H:i:s') : '' }}</p>
                 </div>
+
+                {# Table to display task data in a white Bootstrap-styled table with hover effects. #}
                 <table class="table table-white table-hover">
                     <thead>
                         <tr class="text-center">
@@ -28,15 +42,26 @@
                     </thead>
                     <tbody>
                         <tr class="text-center">
+                            {# Display the due date or not of the task #}
                             <td>{{ task.dueDate ? task.dueDate|date('Y-m-d') : '' }}</td>
+
+                            {# Display the 'is completed' boolean of the task #}
                             <td>{{ task.isCompleted ? 'Yes' : 'No' }}</td>
+                            
                             <td>
+                                {# Progress bar container with a dark border and fixed height #}
                                 <div class="progress border border-dark" style="height: 25px;" title="{{ task.progress }}%">
+
+                                    {# The progress bar itself, showing the task's progress percentage #}
                                     <div class="progress-bar bg-success" role="progressbar" style="width: {{ task.progress }}%;" aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100">
+                                        
+                                        {# Display the progress percentage inside the progress bar #}
                                         {{ task.progress }}%
                                     </div>
                                 </div>
                             </td>
+
+                            {# Display or not, the firstname and lastname of the assigned user #}
                             {% if (task.user == null) %}
                                 <td></td>
                             {% else %}
@@ -45,15 +70,19 @@
                         </tr>
                     </tbody>
                 </table>
+
+                {# Buttons section to return to the task_list or edit the task details #}
                 <div class="d-flex gap-2">
                     <div class="btn-group w-100" role="group" aria-label="Basic example">
-                        <a class="btn btn-dark" href="{{ path('app_task_list_show', { 'id': task.taskList.id }) }}">back to list</a>
+                        <a class="btn btn-dark" href="{{ path('app_task_list_show', { 'id': task.taskList.id }) }}">back to task list</a>
                         <a class="btn btn-secondary" href="{{ path('app_task_edit', {'id': task.id}) }}">edit</a>
                     </div>
-                <div>
-                    {{ include('task/_delete_form.html.twig') }}
+
+                    {# Include the delete form for the task, which will render a button to delete the task #}
+                    <div>
+                        {{ include('task/_delete_form.html.twig') }}
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>

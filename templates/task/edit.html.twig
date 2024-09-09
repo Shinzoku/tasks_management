@@ -1,59 +1,88 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}Edit Task{% endblock %}
+{# Sets the page title to "Edit Task". #}
 
 {% block body %}
     <div class=" d-flex flex-column vh-100 justify-content-center  align-items-center">
         <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
+
             <h1 class="text-center">Edit Task</h1>
+
+            {# Start the form with 'novalidate' attribute to handle validation manually #}
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="d-grid gap-3">
+
+                {# Render label and input for 'tittle' field, pre-filling with current task data #}
                 <div>
                     {{ form_label(form.title) }}
                     {{ form_errors(form.title) }}
                     {{ form_widget(form.title, { 'attr': {'value': task.title} }) }}
                 </div>
+
+                {# Render label and input for 'description' field, pre-filling with current task data #}
                 <div>
                     {{ form_label(form.description) }}
                     {{ form_errors(form.description) }}
                     {{ form_widget(form.description, { 'attr': {'value': task.description} }) }}
                 </div>
+
+                {# Render label and input for 'due_date' field, pre-filling with current task data #}
                 <div>
                     {{ form_label(form.due_date) }}
                     {{ form_widget(form.due_date, { 'attr': {'value': task.dueDate ? task.dueDate|date('Y-m-d') : ''} }) }}
                 </div>
+
                 <div class="mb-3 position-relative">
+                    {# Render the label for the 'progress' field #}
                     {{ form_label(form.progress) }}
+
+                    {# Render the widget for the 'progress' field with the current value #}
                     <div class="d-flex align-items-center">
+                        {# Display the current value of the 'progress' field as a percentage #}
                         {{ form_widget(form.progress, { 'attr': {'value': task.progress} }) }}
                         <span id="rangeValue" class="position-absolute border border-2 border-secondary rounded-3 pb-1 bg-white text-dark text-center">{{ form.vars.value.progress }} %</span>
                     </div>
                 </div>
+
+                {# Render the label for the 'user' field and display the assigned user, if there is one #}
                 <div class="mt-3">
                     {{ form_label(form.user) }} <span> Assigned </span>
                     {{ form_widget(form.user, { 'attr': {'value': task.user ? task.user.getFirstname() ~ ' ' ~ task.user.getLastname() : ''} }) }}
                 </div>
+
+                {# Conditional display of the 'chooseTask' field based on user roles #}
                 {% if is_granted('ROLE_ADMIN') %}
+
+                    {# Hide the 'chooseTask' field widget and its label #}
                     <div class="form-check form-switch d-none">
                         {{ form_widget(form.chooseTask) }}
                         {{ form_label(form.chooseTask, null) }}
                     </div>
                 {% elseif is_granted('ROLE_USER') %}
+                
+                    {# Render the 'chooseTask' field widget and its label #}
                     <div class="form-check form-switch">
                         {{ form_widget(form.chooseTask) }}
                         {{ form_label(form.chooseTask, null) }}
                     </div>
                 {% endif %}
+
                 <div class="d-flex justify-content-end">
+                    {# Include a form template for submit button with custom label #}
                     {{ include('task/_form.html.twig', {'button_label': 'Update'}) }}
                 </div>
             </div>
             {{ form_end(form) }}
+
             <div class="row mt-3">
                 <div class="col">
+                    {# Link to go back to the list of tasks #}
                     <a class="btn btn-dark" href="{{ path('app_task_index') }}">back to list</a>
                 </div>
                 <div class="col-3">
+                    {# Include the delete form template #}
                     {{ include('task/_delete_form.html.twig') }}
                 </div>
             </div>

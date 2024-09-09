@@ -7,36 +7,38 @@ import './bootstrap.js';
  */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
-
+// Modifies the range input value in real time
 window.updateRangeValue = function(rangeInput) {
 
-    // Obtenez la valeur actuelle du curseur
+    // Get the current value of the range input
     const value = parseFloat(rangeInput);
 
+    // Reference to the span showing the range value and the range input element
     const rangeValue = document.getElementById('rangeValue');
     const rangeElement = document.getElementById('task_progress');
 
-    // Obtenez le minimum et maximum de la plage du curseur
+    // Get the minimum and maximum values of the range input
     const min = parseFloat(rangeElement.min) || 0;
     const max = parseFloat(rangeElement.max) || 100;
 
-
-    // Utilisation de setTimeout pour attendre que le DOM soit rendu
+    // Use setTimeout to wait for the DOM to be rendered
     setTimeout(() => {
+
+        // Calculate the width of the range input
         const sliderWidth = rangeElement.clientWidth;
         
-        // Calcul de la position en pourcentage par rapport à la largeur du slider
+        // Calculate the percentage position based on the slider width
         const percentage = (value - min) / (max - min);
         const offset = sliderWidth * percentage;
 
-        // Mise à jour du texte et de la position du span
+        // Update the text and position of the span
         rangeValue.textContent = value + ' %';
         rangeValue.style.left = `${offset}px`;
-    }, 0); // Délai de 0ms pour permettre le rendu du DOM
+
+    }, 0); // 0ms delay to allow the DOM to render
 };
 
-// Appeler la fonction après le chargement de la page pour la valeur initiale
+// Call the function after the page loads to set the initial value
 document.addEventListener('turbo:load', function() {
     const rangeElement = document.getElementById('task_progress');
     if (rangeElement) {

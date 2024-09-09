@@ -1,4 +1,14 @@
+{#  Start the form rendering process using form_start(). 
+    It outputs the opening <form> tag with appropriate attributes. #}
 {{ form_start(form) }}
+
+    {#  Renders all form fields (input, select, etc.) for the given form object.
+        The fields will be wrapped with their labels and necessary markup. #}
     {{ form_widget(form) }}
+
+    {#  Button to submit the form. The button's label is dynamically set.
+        If no label is passed, it defaults to 'Save'. The button uses a Bootstrap 'warning' style class. #}
     <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
+
+{# Ends the form rendering by outputting the closing </form> tag. #}
 {{ form_end(form) }}

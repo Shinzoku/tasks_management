@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
-{% block title %}TaskList index{% endblock %}
+{% block title %}Task List index{% endblock %}
+{# Sets the page title to "Task List Index". #}
 
 {% block body %}
+    {#  Display flash messages, which may include status alerts or notifications. 
+        These are rendered as Bootstrap alerts. #}
     {% for label, messages in app.flashes %}
         <div class="alert alert-{{ label }}">
             {% for message in messages %}
@@ -10,8 +14,10 @@
             {% endfor %}
         </div>
     {% endfor %}
+
     <h1 class="text-center">Task list index</h1>
 
+    {# Table to display task_list data in a dark Bootstrap-styled table with hover effects. #}
     <table class="table table-dark table-hover">
         <thead>
             <tr class="text-center">
@@ -25,8 +31,10 @@
             </tr>
         </thead>
         <tbody>
+        {# Loop through the 'task_lists' variable to display each task_list in a table row #}
         {% for task_list in task_lists %}
             <tr class="text-center">
+                {# Display individual task_list details like ID, first name, description, etc. #}
                 <td class="text-start">{{ task_list.id }}</td>
                 <td class="text-start">{{ task_list.name }}</td>
                 <td class="text-start">{{ task_list.description }}</td>
@@ -34,20 +42,22 @@
                 <td>{{ task_list.createdAt ? task_list.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ task_list.updatedAt ? task_list.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
+                    {#  Display action buttons to show, edit. #}
                     <a class="btn btn-primary" href="{{ path('app_task_list_show', {'id': task_list.id}) }}">show</a>
                     <a class="btn btn-secondary" href="{{ path('app_task_list_edit', {'id': task_list.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
+            {# If no task_lists are found, display a row with a message saying no records are available. #}
             <tr>
-                <td colspan="6" class="text-center">no records found</td>
+                <td colspan="7" class="text-center">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
+    {# Button to create a new task_list, styled with Bootstrap classes. #}
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <a class="btn btn-success m-4" href="{{ path('app_task_list_new') }}">Create new</a>
     </div>
-
 {% endblock %}

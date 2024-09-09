@@ -1,34 +1,51 @@
 {% extends 'base.html.twig' %}
+{# This template extends the base layout. #}
 
 {% block title %}Send Email{% endblock %}
+{# Sets the page title to "Send Email". #}
 
 {% block body %}
     <h1 class="text-center">Send Email</h1>
+
     <div class=" d-flex flex-column vh-100  align-items-center">
         <div class="w-25 border border-1 border-dark p-5 rounded bg-secondary text-white">
+
+            {# Start rendering the form with no HTML5 validation #}
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             <div class="d-grid gap-3">
+
+                {# Render the email field #}
                 <div>
                     {{ form_label(form.email) }}
                     {{ form_widget(form.email) }}
                 </div>
+
+                {# Render the subject field #}
                 <div>
                     {{ form_label(form.subject) }}
                     {{ form_widget(form.subject) }}
                 </div>
+
+                {# Render the message field #}
                 <div>
                     {{ form_label(form.message) }}
                     {{ form_widget(form.message) }}
                 </div>
+
+                {# Render the email confirmation switch #}
                 <div class="form-check form-switch">
                     {{ form_widget(form.emailConfirmation) }}
                     {{ form_label(form.emailConfirmation, null) }}
                 </div>
+
+                {# Render the submit button #}
                 <div class="d-flex justify-content-end">
                     {{ form_row(form.send) }}
                 </div>
             </div>
             {{ form_end(form) }}
+
+            {# A button to go back to the user list #}
             <a class="btn btn-dark" href="{{ path('app_user_index') }}">back to list</a>
         </div>
     </div>

@@ -2,7 +2,11 @@
 
 <p>
     Please confirm your email address by clicking the following link: <br><br>
+
+    {# The "signedUrl" variable contains the confirmation URL, and "raw" is used to prevent escaping. #}
     <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
+    
+    {# The expiration message is translated using the VerifyEmailBundle's translation. #}
     This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
 </p>
 

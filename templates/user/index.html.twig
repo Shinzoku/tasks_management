@@ -27,7 +27,8 @@
     <table class="table table-dark table-hover">
         <thead>
             <tr class="text-center">
-                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'id', 'order': sortField == 'id' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                <th class="text-start">
+                    <a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'id', 'order': sortField == 'id' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
                     {# adds a double arrow when the column is not sorted.
                     or displays an up arrow for ascending sort.
                     or displays a down arrow for descending sort. #}
@@ -35,42 +36,49 @@
                         ID
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'firstname', 'order': sortField == 'firstname' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                <th class="text-start">
+                    <a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'firstname', 'order': sortField == 'firstname' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
                     class="sort-link {% if sortField == 'firstname' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
                         Firstname
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'lastname', 'order': sortField == 'lastname' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                <th class="text-start">
+                    <a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'lastname', 'order': sortField == 'lastname' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
                     class="sort-link {% if sortField == 'lastname' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
                         Lastname
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'email', 'order': sortField == 'email' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                <th class="text-start">
+                    <a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'email', 'order': sortField == 'email' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
                     class="sort-link {% if sortField == 'email' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
                         Email
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'roles', 'order': sortField == 'roles' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                <th>
+                    <a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'roles', 'order': sortField == 'roles' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
                     class="sort-link {% if sortField == 'roles' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
                         Roles
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'isVerified', 'order': sortField == 'isVerified' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                <th>
+                    <a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'isVerified', 'order': sortField == 'isVerified' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
                     class="sort-link {% if sortField == 'isVerified' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
-                        IsVerified
+                        Is Verified
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'createdAt', 'order': sortField == 'createdAt' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                <th>
+                    <a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'createdAt', 'order': sortField == 'createdAt' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
                     class="sort-link {% if sortField == 'createdAt' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
-                        CreatedAt
+                        Created At
                     </a>
                 </th>
-                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'updatedAt', 'order': sortField == 'updatedAt' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                <th>
+                    <a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'updatedAt', 'order': sortField == 'updatedAt' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
                     class="sort-link {% if sortField == 'updatedAt' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
-                        UpdatedAt
+                        Updated At
                     </a>
                 </th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -105,13 +113,14 @@
         </tbody>
     </table>
 
+    {% if pagination.count > 10 %}
     <nav aria-label="Page navigation">
         <ul class="pagination">
             {% if pagination.hasPreviousPage() %}
                 <!-- Show the "Previous" button if there is a previous page -->
                 <li class="page-item">
                     <a class="page-link" href="{{ path('app_user_index', app.request.query.all | merge({'page': pagination.previousPage})) }}" aria-label="Précédent">
-                        <span aria-hidden="true">Previous &laquo;</span> <!-- Left double arrow for "Previous" -->
+                        <span aria-hidden="true">&laquo; Previous</span> <!-- Left double arrow for "Previous" -->
                     </a>
                 </li>
             {% endif %}
@@ -134,4 +143,5 @@
             {% endif %}
         </ul>
     </nav>
+    {% endif %}
 {% endblock %}

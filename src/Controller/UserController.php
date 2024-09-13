@@ -36,7 +36,7 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(Request $request, UserRepository $userRepository): Response
     {
-        $page = $request->query->getInt('page', 1);
+        $page = $request->query->getInt('page', 1); // Current page, by default 1
         $limit = 10; // Number of users per page
 
         // Retrieve sort settings

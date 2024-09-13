@@ -21,11 +21,22 @@ class TaskController extends AbstractController
 {
     // Route to display all tasks
     #[Route('/', name: 'app_task_index', methods: ['GET'])]
-    public function index(TaskRepository $taskRepository): Response
+    public function index(Request $request, TaskRepository $taskRepository): Response
     {
-        // Render the task index page and pass all tasks to the template
+        $page = $request->query->getInt('page', 1); // Current page, by default 1
+        $limit = 10; // Number of tasks per page
+
+        // Retrieve sort settings
+        $sortField = $request->query->get('sort', 'id'); // Default sort by ID
+        $sortOrder = $request->query->get('order', 'asc'); // Default ascending order
+
+        // Using the repository method to retrieve users with paging and sorting
+        $pagination = $taskRepository->findPaginatedTasks($page, $limit, $sortField, $sortOrder);
+
         return $this->render('task/index.html.twig', [
-            'tasks' => $taskRepository->findAll(),
+            'pagination' => $pagination,
+            'sortField' => $sortField,
+            'sortOrder' => $sortOrder,
         ]);
     }
 

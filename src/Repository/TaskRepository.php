@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 
 /**
  * @extends ServiceEntityRepository<Task>
@@ -53,4 +55,25 @@ class TaskRepository extends ServiceEntityRepository
                 ->getResult()
             ;
         }
+
+        public function findPaginatedTasks(int $page, int $limit, ?string $sortField = null, ?string $sortOrder = null): Pagerfanta
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        // Apply sorting criteria if provided
+        if ($sortField) {
+            $sortOrder = $sortOrder === 'desc' ? 'DESC' : 'ASC';
+            $queryBuilder->orderBy('t.' . $sortField, $sortOrder);
+        } else {
+            // Default sorting (for example, by ID)
+            $queryBuilder->orderBy('t.id', 'ASC');
+        }
+
+        // Create the adapter for Pagerfanta
+        $pagerfanta = new Pagerfanta(new QueryAdapter($queryBuilder));
+        $pagerfanta->setMaxPerPage($limit);
+        $pagerfanta->setCurrentPage($page);
+
+        return $pagerfanta;
+    }
 }

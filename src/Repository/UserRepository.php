@@ -64,16 +64,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $queryBuilder = $this->createQueryBuilder('u');
 
-        // Appliquer les critères de tri si fournis
+        // Apply sorting criteria if provided
         if ($sortField) {
             $sortOrder = $sortOrder === 'desc' ? 'DESC' : 'ASC';
             $queryBuilder->orderBy('u.' . $sortField, $sortOrder);
         } else {
-            // Tri par défaut (par exemple, par ID)
+            // Default sorting (for example, by ID)
             $queryBuilder->orderBy('u.id', 'ASC');
         }
 
-        // Créer l'adaptateur pour Pagerfanta
+        // Create the adapter for Pagerfanta
         $pagerfanta = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pagerfanta->setMaxPerPage($limit);
         $pagerfanta->setCurrentPage($page);

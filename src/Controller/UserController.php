@@ -36,18 +36,14 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(Request $request, UserRepository $userRepository): Response
     {
-        // // Render the user index page and pass all users to the template
-        // return $this->render('user/index.html.twig', [
-        //     'users' => $userRepository->findAll(),
-        // ]);
         $page = $request->query->getInt('page', 1);
-        $limit = 10; // Nombre d'utilisateurs par page
+        $limit = 10; // Number of users per page
 
-        // Récupérer les paramètres de tri
-        $sortField = $request->query->get('sort', 'id'); // Par défaut tri par ID
-        $sortOrder = $request->query->get('order', 'asc'); // Par défaut ordre croissant
+        // Retrieve sort settings
+        $sortField = $request->query->get('sort', 'id'); // Default sort by ID
+        $sortOrder = $request->query->get('order', 'asc'); // Default ascending order
 
-        // Utilisation de la méthode du repository pour récupérer les utilisateurs avec pagination et tri
+        // Using the repository method to retrieve users with paging and sorting
         $pagination = $userRepository->findPaginatedUsers($page, $limit, $sortField, $sortOrder);
 
         return $this->render('user/index.html.twig', [

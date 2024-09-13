@@ -25,6 +25,43 @@ This task management application is developed using the Symfony 6.4 framework. I
 - **Email verification** after registration: the confirmation email must be validated to access the features.
 - Administrators can resend verification emails when necessary.
 
+### Pagination and sorting
+The application implements pagination using the **Pagerfanta** bundle. This allows you to break down large datasets into smaller, more manageable pages.
+
+Installation :
+```bash
+composer require pagerfanta/pagerfanta
+```
+For integration with Symfony :
+```bash
+composer require pagerfanta/twig
+```
+#### Pagination
+In the user, task list and task listing page, pagination controls are displayed at the bottom of the table to navigate through the available pages. The pagination controls use Bootstrap for styling, ensuring a responsive and user-friendly interface.
+
+- **Previous/Next Page Navigation**: You can navigate between pages using the previous (`« Previous`) and next (`Next »`) arrows.
+- **Page Numbers**: Click on the page numbers to jump to a specific page.
+
+#### Sorting
+Exemple for user listing page :
+
+The application supports dynamic sorting on the user listing page. You can sort the data by clicking on the column headers. The columns that support sorting are:
+
+- ID: Sorts the users by their ID.
+- Firstname: Sorts the users alphabetically by their firstname.
+- Lastname: Sorts the users alphabetically by their lastname.
+- Email: Sorts the users by their email addresses.
+- Roles: Sorts the users by their roles.
+- IsVerified: Sorts the users by whether or not their email is verified.
+- Creation Date: Sorts the users by the date they were created.
+- Update Date: Sorts the users by the date they were updated.
+
+How Sorting Works :
+
+- When you click on a column header, the data is sorted in ascending order. Clicking again will toggle the sort order to descending.
+- If a column is currently sorted, an arrow icon (`↑` for ascending or `↓` for descending) will be displayed next to the header.
+- If no sorting is applied, a double arrow (`↕`) is displayed, indicating that the column is sortable.
+
 ### Future Features
 - Real-time chat.
 - Registration for the first user (administrator).

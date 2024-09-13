@@ -17,22 +17,52 @@
 
     <h1 class="text-center">Task list index</h1>
 
+    {# Button to create a new task_list, styled with Bootstrap classes. #}
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-success m-4" href="{{ path('app_task_list_new') }}">+ New Task list</a>
+    </div>
+
     {# Table to display task_list data in a dark Bootstrap-styled table with hover effects. #}
     <table class="table table-dark table-hover">
         <thead>
             <tr class="text-center">
-                <th class="text-start">Id</th>
-                <th class="text-start">Name</th>
+                <th class="text-start">
+                    <a href="{{ path('app_task_list_index', app.request.query.all | merge({'sort': 'id', 'order': sortField == 'id' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'id' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        ID
+                    </a>
+                </th>
+                <th class="text-start">
+                    <a href="{{ path('app_task_list_index', app.request.query.all | merge({'sort': 'name', 'order': sortField == 'name' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'name' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        Name
+                    </a>
+                </th>
                 <th class="text-start">Description</th>
-                <th class="text-start">Author</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
+                <th>
+                    <a href="{{ path('app_task_list_index', app.request.query.all | merge({'sort': 'userFullName', 'order': sortField == 'userFullName' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'userFullName' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        Author
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ path('app_task_list_index', app.request.query.all | merge({'sort': 'createdAt', 'order': sortField == 'createdAt' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'createdAt' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        Created At
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ path('app_task_list_index', app.request.query.all | merge({'sort': 'updatedAt', 'order': sortField == 'updatedAt' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'updatedAt' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        Updated At
+                    </a>
+                </th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {# Loop through the 'task_lists' variable to display each task_list in a table row #}
-        {% for task_list in task_lists %}
+        {# Loop through the 'pagination' variable to display each task_list in a table row #}
+        {% for task_list in pagination %}
             <tr class="text-center">
                 {# Display individual task_list details like ID, first name, description, etc. #}
                 <td class="text-start">{{ task_list.id }}</td>
@@ -56,8 +86,35 @@
         </tbody>
     </table>
 
-    {# Button to create a new task_list, styled with Bootstrap classes. #}
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-success m-4" href="{{ path('app_task_list_new') }}">Create new</a>
-    </div>
+    {% if pagination.count > 10 %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if pagination.hasPreviousPage() %}
+                <!-- Show the "Previous" button if there is a previous page -->
+                <li class="page-item">
+                    <a class="page-link" href="{{ path('app_task_list_index', app.request.query.all | merge({'page': pagination.previousPage})) }}" aria-label="Précédent">
+                        <span aria-hidden="true">&laquo; Previous</span> <!-- Left double arrow for "Previous" -->
+                    </a>
+                </li>
+            {% endif %}
+
+            <!-- Loop through all the pages -->
+            {% for page in 1..pagination.nbPages %}
+                <li class="page-item{% if page == pagination.currentPage %} active{% endif %}">
+                    <!-- Highlight the current page by adding the 'active' class -->
+                    <a class="page-link" href="{{ path('app_task_list_index', app.request.query.all | merge({'page': page})) }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+
+            {% if pagination.hasNextPage() %}
+                <!-- Show the "Next" button if there is a next page -->
+                <li class="page-item">
+                    <a class="page-link" href="{{ path('app_task_list_index', app.request.query.all | merge({'page': pagination.nextPage})) }}" aria-label="Suivant">
+                        <span aria-hidden="true">Next &raquo;</span> <!-- Right double arrow for "Next" -->
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
 {% endblock %}

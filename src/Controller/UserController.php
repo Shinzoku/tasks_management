@@ -8,6 +8,7 @@ use App\Form\EmailType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\View\TwitterBootstrap5View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,11 +34,26 @@ class UserController extends AbstractController
 
     // Route to display all users
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository): Response
     {
-        // Render the user index page and pass all users to the template
+        // // Render the user index page and pass all users to the template
+        // return $this->render('user/index.html.twig', [
+        //     'users' => $userRepository->findAll(),
+        // ]);
+        $page = $request->query->getInt('page', 1);
+        $limit = 10; // Nombre d'utilisateurs par page
+
+        // Récupérer les paramètres de tri
+        $sortField = $request->query->get('sort', 'id'); // Par défaut tri par ID
+        $sortOrder = $request->query->get('order', 'asc'); // Par défaut ordre croissant
+
+        // Utilisation de la méthode du repository pour récupérer les utilisateurs avec pagination et tri
+        $pagination = $userRepository->findPaginatedUsers($page, $limit, $sortField, $sortOrder);
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'pagination' => $pagination,
+            'sortField' => $sortField,
+            'sortOrder' => $sortOrder,
         ]);
     }
 

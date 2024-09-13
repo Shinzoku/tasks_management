@@ -2,10 +2,12 @@ body {
     background-color: skyblue;
 }
 
+/* text card information styling */
 .custom-small-text {
     font-size: 12px;
 }
 
+/* cursor value styling for the input range */
 #rangeValue {
     top: 55px; /* Ajuster selon la hauteur du slider */
     width: 55px;
@@ -14,6 +16,37 @@ body {
     white-space: nowrap;
 }
 
+/* input range styling */
 input.form-range {
     width: 100%;
+}
+
+/* sort link styling */
+.sort-link {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Double arrow when sorting is not applied */
+.sort-link::after {
+    content: '\2195'; /* Unicode for double arrow (up-down) */
+    font-size: 0.8em;
+    margin-left: 0.5em;
+    color: #fff; /* Neutral color */
+}
+
+/* Arrow for ascending sort */
+.sort-link.asc::after {
+    content: '\2191'; /* Unicode for arrow up */
+}
+
+/* Arrow for descending sort */
+.sort-link.desc::after {
+    content: '\2193'; /* Unicode for arrow down */
+}
+
+/* sort link hover effect for the text and arrow */
+.sort-link:hover,
+.sort-link:hover::after {
+    color: #ffc107; /* hover color (Bootstrap Warning) */
 }

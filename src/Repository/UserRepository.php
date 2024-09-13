@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -57,4 +59,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findPaginatedUsers(int $page, int $limit, ?string $sortField = null, ?string $sortOrder = null): Pagerfanta
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+
+        // Appliquer les critères de tri si fournis
+        if ($sortField) {
+            $sortOrder = $sortOrder === 'desc' ? 'DESC' : 'ASC';
+            $queryBuilder->orderBy('u.' . $sortField, $sortOrder);
+        } else {
+            // Tri par défaut (par exemple, par ID)
+            $queryBuilder->orderBy('u.id', 'ASC');
+        }
+
+        // Créer l'adaptateur pour Pagerfanta
+        $pagerfanta = new Pagerfanta(new QueryAdapter($queryBuilder));
+        $pagerfanta->setMaxPerPage($limit);
+        $pagerfanta->setCurrentPage($page);
+
+        return $pagerfanta;
+    }
 }

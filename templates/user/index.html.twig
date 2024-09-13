@@ -18,24 +18,64 @@
 
     <h1 class="text-center">User index</h1>
 
+    {# Button to create a new user, styled with Bootstrap classes. #}
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-success m-4" href="{{ path('app_user_new') }}">+ New User</a>
+    </div>
+
     {# Table to display user data in a dark Bootstrap-styled table with hover effects. #}
     <table class="table table-dark table-hover">
         <thead>
             <tr class="text-center">
-                <th>Id</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>IsVerified</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
+                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'id', 'order': sortField == 'id' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    {# adds a double arrow when the column is not sorted.
+                    or displays an up arrow for ascending sort.
+                    or displays a down arrow for descending sort. #}
+                    class="sort-link {% if sortField == 'id' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        ID
+                    </a>
+                </th>
+                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'firstname', 'order': sortField == 'firstname' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'firstname' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        Firstname
+                    </a>
+                </th>
+                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'lastname', 'order': sortField == 'lastname' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'lastname' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        Lastname
+                    </a>
+                </th>
+                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'email', 'order': sortField == 'email' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'email' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        Email
+                    </a>
+                </th>
+                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'roles', 'order': sortField == 'roles' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'roles' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        Roles
+                    </a>
+                </th>
+                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'isVerified', 'order': sortField == 'isVerified' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'isVerified' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        IsVerified
+                    </a>
+                </th>
+                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'createdAt', 'order': sortField == 'createdAt' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'createdAt' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        CreatedAt
+                    </a>
+                </th>
+                <th><a href="{{ path('app_user_index', app.request.query.all | merge({'sort': 'updatedAt', 'order': sortField == 'updatedAt' and sortOrder == 'asc' ? 'desc' : 'asc'})) }}"
+                    class="sort-link {% if sortField == 'updatedAt' %}{{ sortOrder == 'asc' ? 'asc' : 'desc' }}{% endif %}">
+                        UpdatedAt
+                    </a>
+                </th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {# Loop through the 'users' variable to display each user in a table row #}
-        {% for user in users %}
+        {# Loop through the 'pagination' variable to display each user in a table row #}
+        {% for user in pagination %}
             <tr class="text-center">
                 {# Display individual user details like ID, first name, last name, email, etc. #}
                 <td class="text-start">{{ user.id }}</td>
@@ -65,8 +105,33 @@
         </tbody>
     </table>
 
-    {# Button to create a new user, styled with Bootstrap classes. #}
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-success m-4" href="{{ path('app_user_new') }}">Create new</a>
-    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if pagination.hasPreviousPage() %}
+                <!-- Show the "Previous" button if there is a previous page -->
+                <li class="page-item">
+                    <a class="page-link" href="{{ path('app_user_index', app.request.query.all | merge({'page': pagination.previousPage})) }}" aria-label="Précédent">
+                        <span aria-hidden="true">Previous &laquo;</span> <!-- Left double arrow for "Previous" -->
+                    </a>
+                </li>
+            {% endif %}
+
+            <!-- Loop through all the pages -->
+            {% for page in 1..pagination.nbPages %}
+                <li class="page-item{% if page == pagination.currentPage %} active{% endif %}">
+                    <!-- Highlight the current page by adding the 'active' class -->
+                    <a class="page-link" href="{{ path('app_user_index', app.request.query.all | merge({'page': page})) }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+
+            {% if pagination.hasNextPage() %}
+                <!-- Show the "Next" button if there is a next page -->
+                <li class="page-item">
+                    <a class="page-link" href="{{ path('app_user_index', app.request.query.all | merge({'page': pagination.nextPage})) }}" aria-label="Suivant">
+                        <span aria-hidden="true">Next &raquo;</span> <!-- Right double arrow for "Next" -->
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
 {% endblock %}

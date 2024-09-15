@@ -37,8 +37,18 @@ class RegistrationController extends AbstractController
 
         // Check if the form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
-            // Set the minimal state of the role (ROLE_USER) for a new user
-            $user->setRoles(['ROLE_USER']);
+            // Check if this is the first user in the database
+            $userRepository = $entityManager->getRepository(User::class);
+            $isFirstUser = !$userRepository->findOneBy([]);
+
+            // If it's the first user, assign the admin role
+            if ($isFirstUser) {
+                $user->setRoles(['ROLE_ADMIN']);
+            } else {
+                // Otherwise, assign the regular user role
+                $user->setRoles(['ROLE_USER']);
+            }
+            
             //Set the hashed password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(

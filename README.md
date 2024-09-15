@@ -62,9 +62,15 @@ How Sorting Works :
 - If a column is currently sorted, an arrow icon (`↑` for ascending or `↓` for descending) will be displayed next to the header.
 - If no sorting is applied, a double arrow (`↕`) is displayed, indicating that the column is sortable.
 
+### The first user with admin rights
+For this project, I assume that I deliver the project to the client and that the client becomes the administrator when registering.
+
+When the user registers, it checks the database to see if they are the first user to register :
+- If he is first, he has the Admin role.
+- Otherwise he has the User role.
+
 ### Future Features
 - Real-time chat.
-- Registration for the first user (administrator).
 
 ## Prerequisites
 

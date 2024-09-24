@@ -3,6 +3,10 @@
 namespace App\Security;
 
 use App\Repository\UserRepository;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -96,14 +100,45 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Get the authenticated user and their roles
+        $user = $token->getUser();
+        $roles = $user->getRoles();
+
+        // Generate a unique UUID
+        $uniqueId = Uuid::uuid4()->toString();
+        
+        // Generate the JWT
+        $jwtSecretKey = $_ENV['JWT_SECRET_KEY']; // Make sure this key is in your .env
+        $config = Configuration::forSymmetricSigner(
+            new Sha256(),
+            InMemory::plainText($jwtSecretKey)
+        );
+
+        $now = new \DateTimeImmutable();
+        $tokenJwt = $config->builder()
+            ->issuedBy('https://127.0.0.1:8000/')  // The token issuer
+            ->permittedFor('https://127.0.0.1:8000/') // Recipient of the token
+            ->identifiedBy($uniqueId, true)  // A unique ID for the token
+            ->issuedAt($now)  // When the token is issued
+            ->expiresAt($now->modify('+1 hour'))  // Token expiration date
+            ->withClaim('user_id', $user->getId())  // User ID
+            ->withClaim('roles', $roles)  // Add the roles to the token
+            ->getToken($config->signer(), $config->signingKey());
+
+        // Convert JWT token to chain
+        $jwt = $tokenJwt->toString();
+
+        // Return the JWT to the frontend via session or cookies, or in the JSON response
+        // For example, we can add it to a JSON response for an API Login
+        return new JsonResponse([
+            'message' => 'Authentication successful',
+            'token' => $jwt
+        ]);
+
         // Check if there's a previously requested path (e.g., before the login attempt)
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
-        // Get the authenticated user and their roles
-        $user = $token->getUser();
-        $roles = $user->getRoles();
 
         // If the user has the 'ROLE_ADMIN' role, redirect them to the admin dashboard or homepage
         if (in_array('ROLE_ADMIN', $roles)) {
